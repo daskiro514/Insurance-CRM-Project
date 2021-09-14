@@ -1,7 +1,9 @@
 node_modules/
 .prettierrc
 package-lock.json
+migrate/
 config/default.json
+seeder.js
 
 
 client/node_modules/
