@@ -8,9 +8,11 @@ const gravatar = require('gravatar')
 const users = [
   {
     type: 'admin',
-    name: 'Admin King',
+    name: 'Steven Hooley',
     email: 'sbhooley@gmail.com',
     avatar: normalize(gravatar.url('sbhooley@gmail.com', { s: '200', r: 'pg', d: 'mm' }), { forceHttps: true }),
     password: bcrypt.hashSync('admin123', salt),
   }
 ]
+
+module.exports = users;
