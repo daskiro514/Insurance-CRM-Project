@@ -5,7 +5,6 @@ migrate/
 config/default.json
 seeder.js
 
-
 client/node_modules/
 client/.eslintcache
 client/package-lock.json
