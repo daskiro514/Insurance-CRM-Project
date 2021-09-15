@@ -1,15 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
+import { goPage } from '../../../actions/admin'
 import logo from '../../../img/logo/logo.svg'
 import alarm from '../../../img/admin/alarm.svg'
 import userAvatar from "../../../img/admin/userAvatar.png"
 
-const MasterAdminCustomers = ({ user }) => {
+const MasterAdminCustomers = ({ user, goPage }) => {
+  let history = useHistory()
 
   return (
-    <div className='m-3 adminHeader'>
-      <div className='row d-flex align-items-center'>
+    <div className='m-2'>
+      <div className='row adminHeader d-flex align-items-center mb-3'>
         <div className='col-md-6 mr-auto mb-3'>
           <Link to='/'><img src={logo} alt='LOGO' width='250px' /></Link>
         </div>
@@ -66,15 +68,16 @@ const MasterAdminCustomers = ({ user }) => {
         </table>
         <div className='d-flex align-items-center mx-3 my-2' >
           <div className='mr-auto addClient'>
-            + ADD CLIENT
+            <span onClick={() => goPage(history, 'addCustomer')}>+ ADD CLIENT</span>
+            {/* <Link to='/addCustomer'>+ ADD CLIENT</Link> */}
           </div>
           <div className='d-flex align-items-center pageControl'>
             <div className='mr-3'>
               1 - 10 OF 47
             </div>
             <div>
-              <i class='fas fa-angle-double-left mr-2'></i>
-              <i class='fas fa-angle-double-right'></i>
+              <i className='fas fa-angle-double-left mr-2'></i>
+              <i className='fas fa-angle-double-right'></i>
             </div>
           </div>
         </div>
@@ -87,4 +90,4 @@ const mapStateToProps = state => ({
   user: state.auth.user
 })
 
-export default connect(mapStateToProps, {})(MasterAdminCustomers)
+export default connect(mapStateToProps, { goPage })(MasterAdminCustomers)

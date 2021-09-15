@@ -8,6 +8,7 @@ const MasterAdminSidebar = ({ logout }) => {
   let history = useHistory()
 
   const goPage = async location => {
+    await history.push(`/`)
     await history.push(`/home`)
     await history.push(`/home/${location}`)
   }

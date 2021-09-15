@@ -49,3 +49,13 @@ img {
 .bg-admin .customerTable .pageControl i {
   font-size: 24px;
 }
+
+.bg-admin .form {
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 5px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.bg-admin .form .form-group input {
+  background-color: #eee;
+}
