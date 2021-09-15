@@ -2,6 +2,12 @@ img {
   margin: 0px !important
 }
 
+.bg-login {
+  background-color: #000356;
+  min-height: 100vh;
+  color: white;
+}
+
 .bg-admin .sidebar {
   background-color: #000356;
   min-height: 100vh;

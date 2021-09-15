@@ -69,7 +69,6 @@ const MasterAdminCustomers = ({ user, goPage }) => {
         <div className='d-flex align-items-center mx-3 my-2' >
           <div className='mr-auto addClient'>
             <span onClick={() => goPage(history, 'addCustomer')}>+ ADD CLIENT</span>
-            {/* <Link to='/addCustomer'>+ ADD CLIENT</Link> */}
           </div>
           <div className='d-flex align-items-center pageControl'>
             <div className='mr-3'>

@@ -33,7 +33,7 @@ const App = () => {
           {/* <Navbar /> */}
           <Switch>
             <Route exact path="/">
-              <Redirect to="/home" />
+              <Redirect to="/login" />
             </Route>
             <Route component={Routes} />
           </Switch>
