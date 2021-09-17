@@ -2,12 +2,17 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link, useHistory } from 'react-router-dom'
 import { goPage } from '../../../actions/admin'
+import { getCustomers } from '../../../actions/admin'
 import logo from '../../../img/logo/logo.svg'
 import alarm from '../../../img/admin/alarm.svg'
-import userAvatar from "../../../img/admin/userAvatar.png"
+import userAvatar from '../../../img/admin/userAvatar.png'
 
-const MasterAdminCustomers = ({ user, goPage }) => {
+const MasterAdminCustomers = ({ user, goPage, getCustomers, customers }) => {
   let history = useHistory()
+
+  React.useEffect(() => {
+    getCustomers()
+  }, [getCustomers])
 
   return (
     <div className='m-2'>
@@ -19,12 +24,12 @@ const MasterAdminCustomers = ({ user, goPage }) => {
           <div>
             <img src={alarm} alt='ALARM' width='22px' className='mr-2' />
             <span className='mr-2'>{user.name}</span>
-            <img src={user.avatar ? user.avatar : userAvatar} alt="AVATAR" className='rounded-circle' width='35px' />
+            <img src={user.avatar ? user.avatar : userAvatar} alt='AVATAR' className='rounded-circle' width='35px' />
           </div>
           <div className='mr-3'>
             <div style={{ height: '30px', width: '180px', backgroundColor: '#E8E8E8', color: '#555' }}>
               <span className='ml-2'>
-                <i className="fa fa-search mt-2 mr-1"></i>
+                <i className='fa fa-search mt-2 mr-1'></i>
                 <input placeholder='Search' className='headerInput' />
               </span>
             </div>
@@ -43,27 +48,15 @@ const MasterAdminCustomers = ({ user, goPage }) => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>E84142547102</td>
-              <td>CapStone, LLC</td>
-              <td>$2,540.96</td>
-              <td>08/24/2021</td>
-              <td><button className='btn btn-danger btn-sm'>HIGH</button></td>
-            </tr>
-            <tr>
-              <td>E83451645694</td>
-              <td>Rick Anderson</td>
-              <td>$3,178.17</td>
-              <td>09/13/2021</td>
-              <td><button className='btn btn-warning btn-sm'>MED</button></td>
-            </tr>
-            <tr>
-              <td>E83451645694</td>
-              <td>Ekindo Solutions, INC</td>
-              <td>$7,648.55</td>
-              <td>11/30/2021</td>
-              <td><button className='btn btn-success btn-sm'>LOW</button></td>
-            </tr>
+            {customers.map((item, index) =>
+              <tr key={index}>
+                <td>{item.policyNumber}</td>
+                <td>{item.companyName}</td>
+                <td>$ {item.ppmfeEndorsements}</td>
+                <td>{item.peDates.slice(0,10)}</td>
+                <td><button className='btn btn-danger btn-sm'>HIGH</button></td>
+              </tr>
+            )}
           </tbody>
         </table>
         <div className='d-flex align-items-center mx-3 my-2' >
@@ -86,7 +79,8 @@ const MasterAdminCustomers = ({ user, goPage }) => {
 }
 
 const mapStateToProps = state => ({
-  user: state.auth.user
+  user: state.auth.user,
+  customers: state.admin.customers
 })
 
-export default connect(mapStateToProps, { goPage })(MasterAdminCustomers)
+export default connect(mapStateToProps, { goPage, getCustomers })(MasterAdminCustomers)

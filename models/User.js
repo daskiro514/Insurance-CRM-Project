@@ -1,9 +1,14 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true
+  },
+  username: {
+    type: String,
+    required: true,
+    unique: true
   },
   email: {
     type: String,
@@ -14,6 +19,9 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  passwordForUpdate: {
+    type: String,
+  },
   avatar: {
     type: String
   },
@@ -21,9 +29,39 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  // ADDED FOR INSURON
   type: {
     type: String,
+    required: true
   },
-});
+  // FOR CLIENTS(CUSTOMERS)
+  policyNumber: {
+    type: String
+  },
+  companyName: {
+    type: String
+  },
+  peDates: {
+    type: Date,
+  },
+  ppmfeEndorsements: {
+    type: Number
+  },
+  glcDescription: {
+    type: String
+  },
+  glccoRate: {
+    type: Number
+  },
+  glcccoRate: {
+    type: Number
+  },
+  wccDescription: {
+    type: String
+  },
+  wccRate: {
+    type: Number
+  }
+})
 
-module.exports = mongoose.model('user', UserSchema);
+module.exports = mongoose.model('user', UserSchema)

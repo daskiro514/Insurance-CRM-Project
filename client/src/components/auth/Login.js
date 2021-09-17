@@ -3,26 +3,25 @@ import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { login } from '../../actions/auth'
-import logo from '../../img/logo/logo-white.png'
 
 const Login = ({ login, isAuthenticated, user }) => {
   const [formData, setFormData] = React.useState({
-    email: '',
+    username: '',
     password: ''
   })
 
-  const { email, password } = formData
+  const { username, password } = formData
 
   const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value })
 
   const onSubmit = e => {
     e.preventDefault()
-    login(email, password)
+    login(username, password)
   }
 
   if (isAuthenticated && user) {
-    return <Redirect to={"/home/"} />
+    return <Redirect to={'/home/'} />
   }
 
   return (
@@ -32,36 +31,36 @@ const Login = ({ login, isAuthenticated, user }) => {
           <div className='col-md-3'></div>
           <div className='col-md-6 pt-4'>
             <div className='p-5 d-flex justify-content-center'>
-              <img src={logo} alt="LOGO" />
+              <h1 style={{fontSize: '75px'}}>Aquerate</h1>
             </div>
-            <form className="form p-5" onSubmit={onSubmit}>
-              <div className="form-group">
+            <form className='form p-5' onSubmit={onSubmit}>
+              <div className='form-group'>
                 <input
-                  type="email"
-                  placeholder="Email Address"
-                  name="email"
+                  type='text'
+                  placeholder='Username'
+                  name='username'
                   className='form-control'
-                  value={email}
+                  value={username}
                   onChange={onChange}
                   required
                 />
               </div>
-              <div className="form-group">
+              <div className='form-group'>
                 <input
-                  type="password"
-                  placeholder="Password"
-                  name="password"
+                  type='password'
+                  placeholder='Password'
+                  name='password'
                   className='form-control'
                   value={password}
                   onChange={onChange}
-                  minLength="6"
+                  minLength='6'
                 />
               </div>
-              <div className="form-group">
+              <div className='form-group'>
                 <input
-                  type="submit"
+                  type='submit'
                   className='form-control btn-info'
-                  value="Login"
+                  value='Login'
                 />
               </div>
             </form>

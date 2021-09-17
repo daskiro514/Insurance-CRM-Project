@@ -37,7 +37,7 @@ const MasterAdminSidebar = ({ logout }) => {
         <div className='row mx-3 my-1 menuItem' onClick={() => goPage('')}>
           Travelers
         </div>
-        <div className='row mx-3 menuItem' onClick={logout} style={{position: 'absolute', bottom: '20px'}}>
+        <div className='row mx-3 menuItem signoutLink' onClick={logout}>
           &#8601; Sign Out
         </div>
       </div>

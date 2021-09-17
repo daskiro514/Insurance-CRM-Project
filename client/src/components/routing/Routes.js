@@ -13,10 +13,10 @@ const Routes = props => {
     <section>
       <Alert />
       <Switch>
-        <Route exact path="/register" component={Register} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/home" component={Home} />
-        <PrivateRoute path="/home" component={Home} />
+        <Route exact path='/register' component={Register} />
+        <Route exact path='/login' component={Login} />
+        <Route exact path='/home' component={Home} />
+        <PrivateRoute path='/home' component={Home} />
         <Route component={NotFound} />
       </Switch>
     </section>
