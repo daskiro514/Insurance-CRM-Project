@@ -1,8 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { addCustomer } from '../../../actions/admin'
-import logo from '../../../img/logo/logo.svg'
+// import logo from '../../../img/logo/logo.svg'
 import alarm from '../../../img/admin/alarm.svg'
 import userAvatar from '../../../img/admin/userAvatar.png'
 
@@ -10,21 +10,6 @@ const MasterAdminAddCustomer = ({ user, addCustomer }) => {
   const history = useHistory()
 
   const [formData, setFormData] = React.useState({
-    // name: 'Client King2',
-    // username: 'king2',
-    // password: 'admin123',
-    // password2: 'admin123',
-    // policyNumber: 'E548614596436',
-    // companyName: 'CapStone, LLC',
-    // peDates: '2021-05-17',
-    // ppmfeEndorsements: 2540.96,
-    // email: 'capstonesolutions@gmail.com',
-    // glcDescription: 'Automotive Parts and Supplies Distributors (5013)',
-    // glccoRate: 3.5,
-    // glcccoRate: 2.7,
-    // wccDescription: 'Automotive - Machine Shop (3632)',
-    // wccRate: 3.46,
-
     name: '',
     username: '',
     password: '',
@@ -54,9 +39,9 @@ const MasterAdminAddCustomer = ({ user, addCustomer }) => {
 
   return (
     <div className='m-2'>
-      <div className='row adminHeader d-flex align-items-center mb-2'>
+      <div className='row adminHeader d-flex align-items-center mb-3 mt-3'>
         <div className='col-md-6 mr-auto mb-3'>
-          <Link to='/'><img src={logo} alt='LOGO' width='250px' /></Link>
+          {/* <Link to='/'><img src={logo} alt='LOGO' width='250px' /></Link> */}
         </div>
         <div className='col-md-6 d-flex flex-row-reverse align-items-center'>
           <div>

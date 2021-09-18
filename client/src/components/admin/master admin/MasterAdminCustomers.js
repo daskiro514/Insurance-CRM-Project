@@ -1,9 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { goPage } from '../../../actions/admin'
 import { getCustomers } from '../../../actions/admin'
-import logo from '../../../img/logo/logo.svg'
+// import logo from '../../../img/logo/logo.svg'
 import alarm from '../../../img/admin/alarm.svg'
 import userAvatar from '../../../img/admin/userAvatar.png'
 
@@ -16,9 +16,9 @@ const MasterAdminCustomers = ({ user, goPage, getCustomers, customers }) => {
 
   return (
     <div className='m-2'>
-      <div className='row adminHeader d-flex align-items-center mb-3'>
+      <div className='row adminHeader d-flex align-items-center mb-3 mt-3'>
         <div className='col-md-6 mr-auto mb-3'>
-          <Link to='/'><img src={logo} alt='LOGO' width='250px' /></Link>
+          {/* <Link to='/'><img src={logo} alt='LOGO' width='250px' /></Link> */}
         </div>
         <div className='col-md-6 d-flex flex-row-reverse align-items-center'>
           <div>

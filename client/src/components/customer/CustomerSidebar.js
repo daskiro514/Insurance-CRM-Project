@@ -17,7 +17,7 @@ const CustomerSidebar = ({ logout }) => {
     <div className='col-md-2 p-2 sidebar'>
       <div className='container-fluid'>
         <div className='row my-4 mx-2 h3 menuItem' onClick={() => goPage('')}>
-          <img src={menuLogo} alt='MENULOGO' className='pr-2' height='30px' />InsuRon
+          <img src={menuLogo} alt='MENULOGO' className='pr-2' />Aquerate
         </div>
         <div className='row mx-3 my-1 menuItem' onClick={() => goPage('')}>
           <i className='fas fa-user-friends'></i>My Account
