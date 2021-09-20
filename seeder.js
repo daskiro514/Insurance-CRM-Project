@@ -1,5 +1,8 @@
-const users = require('./migrate/users.js');
 const User = require('./models/User')
+const Carrier = require('./models/Carrier')
+
+const users = require('./migrate/users.js')
+const carriers = require('./migrate/carriers.js')
 
 // MongoDB Connect
 const connectDB = require('./config/db');
@@ -7,6 +10,12 @@ connectDB()
 
 const importData = async () => {
   try {
+    await Carrier.deleteMany()
+
+    for (let index = 0; index < carriers.length; index ++) {
+      await Carrier.create(carriers[index])
+    }
+
     await User.deleteMany()
 
     for (let index = 0; index < users.length; index ++) {

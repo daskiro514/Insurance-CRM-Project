@@ -2,6 +2,23 @@ img {
   margin: 0px !important
 }
 
+.modal {
+  display: block;
+}
+
+.modal-content {
+  box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
+}
+
+.modal .modal-header {
+  background-color: #000356;
+  color: #fff;
+}
+
+.modal .modal-header .close {
+  color: #fff;
+}
+
 .bg-login {
   background-color: #000356;
   min-height: 100vh;
@@ -40,6 +57,10 @@ img {
   }
 }
 
+.bg-admin .main {
+  min-height: 90vh;
+}
+
 .bg-admin .adminHeader .headerInput {
   width: 150px;
   height: 25px;
@@ -53,6 +74,7 @@ img {
 
 .bg-admin .customerTable {
   border: 1px solid #dee2e6;
+  margin-bottom: 150px;
 }
 
 .bg-admin .customerTable table {
@@ -62,6 +84,10 @@ img {
 
 .bg-admin .customerTable table thead th {
   border-bottom: 0px;
+}
+
+.bg-admin .customerTable table tbody tr {
+  cursor: pointer;
 }
 
 .bg-admin .customerTable table tbody tr td button {
@@ -86,3 +112,4 @@ img {
 .bg-admin .form .form-group input {
   background-color: #eee;
 }
+

@@ -1,11 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { logout } from '../../../actions/auth'
+import { getCarriers } from '../../../actions/admin'
 import { useHistory } from "react-router-dom"
 import menuLogo from '../../../img/logo/menu-logo.svg'
 
-const MasterAdminSidebar = ({ logout }) => {
+const MasterAdminSidebar = ({ logout, getCarriers, carriers }) => {
   let history = useHistory()
+
+  React.useEffect(() => {
+    getCarriers()
+  }, [getCarriers])
 
   const goPage = async location => {
     await history.push(`/`)
@@ -19,24 +24,11 @@ const MasterAdminSidebar = ({ logout }) => {
         <div className='row my-4 mx-2 h3 menuItem' onClick={() => goPage('')}>
           <img src={menuLogo} alt='MENULOGO' className='pr-2' />Aquerate
         </div>
-        <div className='row mx-3 my-1 menuItem' onClick={() => goPage('')}>
-          Liberty Mutual
-        </div>
-        <div className='row mx-3 my-1 menuItem' onClick={() => goPage('')}>
-          State Farm
-        </div>
-        <div className='row mx-3 my-1 menuItem' onClick={() => goPage('')}>
-          Nationwide
-        </div>
-        <div className='row mx-3 my-1 menuItem' onClick={() => goPage('')}>
-          The Hartford
-        </div>
-        <div className='row mx-3 my-1 menuItem' onClick={() => goPage('')}>
-          Progressive
-        </div>
-        <div className='row mx-3 my-1 menuItem' onClick={() => goPage('')}>
-          Travelers
-        </div>
+        {carriers.map((carrier, index) =>
+          <div className='row mx-3 my-1 menuItem' onClick={() => goPage(`carrier/${carrier._id}`)} key={index}>
+            {carrier.name}
+          </div>
+        )}
         <div className='row mx-3 menuItem signoutLink' onClick={logout}>
           &#8601; Sign Out
         </div>
@@ -46,7 +38,8 @@ const MasterAdminSidebar = ({ logout }) => {
 }
 
 const mapStateToProps = state => ({
-  user: state.auth.user
+  user: state.auth.user,
+  carriers: state.admin.carriers
 })
 
-export default connect(mapStateToProps, { logout })(MasterAdminSidebar)
+export default connect(mapStateToProps, { logout, getCarriers })(MasterAdminSidebar)

@@ -35,6 +35,10 @@ const UserSchema = new mongoose.Schema({
     required: true
   },
   // FOR CLIENTS(CUSTOMERS)
+  carrier: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'carrier'
+  },
   policyNumber: {
     type: String
   },
@@ -61,6 +65,10 @@ const UserSchema = new mongoose.Schema({
   },
   wccRate: {
     type: Number
+  },
+  priority: {
+    type: String,
+    default: 'low'
   }
 })
 

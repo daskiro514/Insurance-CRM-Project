@@ -8,6 +8,16 @@ const gravatar = require('gravatar')
 
 // Model
 const User = require('../../models/User')
+const Carrier = require('../../models/Carrier')
+
+router.get('/getCarriers', async (req, res) => {
+  const carriers = await Carrier.find()
+
+  res.json({
+    success: true,
+    carriers
+  })
+})
 
 router.post('/addCustomer', async (req, res) => {
   let newCustomer = new User({
@@ -36,6 +46,14 @@ router.get('/getCustomers', async (req, res) => {
   res.json({
     success: true,
     customers
+  })
+})
+
+router.post('/updateCustomerPriority/:id', async (req, res) => {
+  await User.findByIdAndUpdate(req.params.id, req.body)
+
+  res.json({
+    success: true
   })
 })
 
