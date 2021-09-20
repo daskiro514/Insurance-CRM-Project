@@ -57,4 +57,13 @@ router.post('/updateCustomerPriority/:id', async (req, res) => {
   })
 })
 
+router.get('/getCustomer/:id', async (req, res) => {
+  const customer = await User.findById(req.params.id)
+
+  res.json({
+    success: true,
+    customer
+  })
+})
+
 module.exports = router

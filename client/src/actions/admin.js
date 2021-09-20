@@ -4,7 +4,8 @@ import {
   CARRIERS_LOADED,
   CUSTOMERS_LOADED,
   PRIORITY_EDIT_SHOW,
-  PRIORITY_EDIT_CUSTOMER_LOADED
+  PRIORITY_EDIT_CUSTOMER_LOADED,
+  ADMIN_CUSTOMER_LOADED
 } from './types'
 
 export const getCarriers = () => async dispatch => {
@@ -64,6 +65,17 @@ export const updateCustomerPriority = (customerID, priority) => async dispatch =
     dispatch({
       type: PRIORITY_EDIT_SHOW,
       payload: false
+    })
+  }
+}
+
+export const getCustomer = (customerID) => async dispatch => {
+  const response = await api.get(`/admin/getCustomer/${customerID}`)
+
+  if (response.data.success) {
+    dispatch({
+      type: ADMIN_CUSTOMER_LOADED,
+      payload: response.data.customer
     })
   }
 }

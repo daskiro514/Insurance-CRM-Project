@@ -2,7 +2,8 @@ import {
   CARRIERS_LOADED,
   CUSTOMERS_LOADED,
   PRIORITY_EDIT_SHOW,
-  PRIORITY_EDIT_CUSTOMER_LOADED
+  PRIORITY_EDIT_CUSTOMER_LOADED,
+  ADMIN_CUSTOMER_LOADED
 } from '../actions/types'
 
 const initialState = {
@@ -10,7 +11,8 @@ const initialState = {
   customers: [],
   carrierCustomers: [],
   customerForPriorityEdit: null,
-  customerPriorityEditModalShow: false
+  customerPriorityEditModalShow: false,
+  adminCustomer: null
 }
 
 function adminReducer(state = initialState, action) {
@@ -37,6 +39,11 @@ function adminReducer(state = initialState, action) {
       return {
         ...state,
         customerForPriorityEdit: payload
+      }
+    case ADMIN_CUSTOMER_LOADED:
+      return {
+        ...state,
+        adminCustomer: payload
       }
     default:
       return state
