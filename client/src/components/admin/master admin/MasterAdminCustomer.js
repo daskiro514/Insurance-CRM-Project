@@ -12,7 +12,7 @@ const MasterAdminCustomer = ({ match, getCustomer, customer }) => {
     <div className='m-2 main'>
       <MasterAdminHeader />
       {customer ?
-        <div className='border rounded-lg container py-3 px-4'>
+        <div className='border rounded-lg container py-3 px-4 clientShow'>
           <h5>Policy Details</h5>
           <div className='row pt-2'>
             <div className='col-sm-6'>Policy Number</div>
