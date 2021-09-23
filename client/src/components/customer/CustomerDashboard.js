@@ -32,7 +32,7 @@ const CustomerDashboard = ({ user }) => {
         </div>
         <div className='row'>
           <div className='col-sm-6'>Policy Effective Dates</div>
-          <div className='col-sm-6 pl-4'>{user.peDates}</div>
+          <div className='col-sm-6 pl-4'>{user.peDates.slice(0, 10)}</div>
         </div>
         <div className='row'>
           <div className='col-sm-6'>Policy Holder Email</div>
@@ -64,7 +64,7 @@ const CustomerDashboard = ({ user }) => {
             </tbody>
           </table>
         </div>
-        <div className='table-responsive mt-4'>
+        <div className='table-responsive'>
           <h5>Worker's Compensation Insurance</h5>
           <table className='table table-borderless'>
             <thead>
@@ -88,28 +88,6 @@ const CustomerDashboard = ({ user }) => {
               )}
             </tbody>
           </table>
-        </div>
-
-
-        <div className='row pt-3'>
-          <div className='col-sm-6'>General Liability Class Description</div>
-          <div className='col-sm-6 pl-4'>{user.glcDescription}</div>
-        </div>
-        <div className='row'>
-          <div className='col-sm-6'>General Liability Class Code Ongoing Rate</div>
-          <div className='col-sm-6 pl-4'>{user.glccoRate}</div>
-        </div>
-        <div className='row'>
-          <div className='col-sm-6'>General Liability Class Code Completed Ops Rate</div>
-          <div className='col-sm-6 pl-4'>{user.glcccoRate}</div>
-        </div>
-        <div className='row pt-3'>
-          <div className='col-sm-6'>Workers Comp Class Description</div>
-          <div className='col-sm-6 pl-4'>{user.wccDescription}</div>
-        </div>
-        <div className='row'>
-          <div className='col-sm-6'>Work Comp Class Rate</div>
-          <div className='col-sm-6 pl-4'>{user.wccRate}</div>
         </div>
       </div>
       <div className='row my-4'>

@@ -77,7 +77,7 @@ const MasterAdminCustomer = ({ match, getCustomer, customer, goPage }) => {
               </tbody>
             </table>
           </div>
-          <div className='table-responsive mt-4'>
+          <div className='table-responsive'>
             <h5>Worker's Compensation Insurance</h5>
             <table className='table table-borderless'>
               <thead>
