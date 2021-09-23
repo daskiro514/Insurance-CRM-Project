@@ -9,16 +9,16 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
   const history = useHistory()
 
   const [formData, setFormData] = React.useState({
-    name: 'Test Name',
-    username: 'king4',
-    password: 'admin123',
-    password2: 'admin123',
-    carrier: '6147ee1c798a275630f9ed2a',
-    policyNumber: 'E548614596438',
-    companyName: 'Test Company',
-    peDates: '2021-11-10',
-    ppmfeEndorsements: 9702.36,
-    email: 'client@king4.com',
+    name: '',
+    username: '',
+    password: '',
+    password2: '',
+    carrier: '',
+    policyNumber: '',
+    companyName: '',
+    peDates: '',
+    ppmfeEndorsements: 0,
+    email: '',
   })
 
   const { name, username, password, password2, carrier, policyNumber, companyName, peDates, ppmfeEndorsements, email } = formData

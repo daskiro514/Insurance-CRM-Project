@@ -51,15 +51,17 @@ const MasterAdminCustomer = ({ match, getCustomer, customer }) => {
                   <th>Class / Name</th>
                   <th>Amount ($)</th>
                   <th>Rate (%)</th>
+                  <th>Type</th>
                 </tr>
               </thead>
               <tbody>
-                {gliClasses.map((item, index) => 
+                {gliClasses.map((item, index) =>
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td>{item.name}</td>
                     <td>{item.amount}</td>
                     <td>{item.rate}</td>
+                    <td>{item.type}</td>
                   </tr>
                 )}
               </tbody>
@@ -72,42 +74,24 @@ const MasterAdminCustomer = ({ match, getCustomer, customer }) => {
                 <tr>
                   <th>No</th>
                   <th>Class / Name</th>
-                  <th>Amount</th>
-                  <th>Rate</th>
+                  <th>Amount ($)</th>
+                  <th>Rate (%)</th>
+                  <th>Type</th>
                 </tr>
               </thead>
               <tbody>
-                {wciClasses.map((item, index) => 
+                {wciClasses.map((item, index) =>
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td>{item.name}</td>
                     <td>{item.amount}</td>
                     <td>{item.rate}</td>
+                    <td>{item.type}</td>
                   </tr>
                 )}
               </tbody>
             </table>
           </div>
-          {/* <div className='row pt-3'>
-            <div className='col-sm-6'>General Liability Class Description</div>
-            <div className='col-sm-6 pl-4'>{customer.glcDescription}</div>
-          </div>
-          <div className='row'>
-            <div className='col-sm-6'>General Liability Class Code Ongoing Rate</div>
-            <div className='col-sm-6 pl-4'>{customer.glccoRate}</div>
-          </div>
-          <div className='row'>
-            <div className='col-sm-6'>General Liability Class Code Completed Ops Rate</div>
-            <div className='col-sm-6 pl-4'>{customer.glcccoRate}</div>
-          </div>
-          <div className='row pt-3'>
-            <div className='col-sm-6'>Workers Comp Class Description</div>
-            <div className='col-sm-6 pl-4'>{customer.wccDescription}</div>
-          </div>
-          <div className='row'>
-            <div className='col-sm-6'>Work Comp Class Rate</div>
-            <div className='col-sm-6 pl-4'>{customer.wccRate}</div>
-          </div> */}
           <h5 className='pt-3'>Coverages</h5>
           <div className='row'>
             <div className='col-sm-6'>
