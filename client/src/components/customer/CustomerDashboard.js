@@ -1,8 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { goPage } from '../../actions/admin'
+import { useHistory } from 'react-router'
 import CustomerAdminHeader from './partials/CustomerAdminHeader'
 
-const CustomerDashboard = ({ user }) => {
+const CustomerDashboard = ({ user, goPage }) => {
+  let history = useHistory()
   const [gliClasses, setGliClasses] = React.useState([])
   const [wciClasses, setWciClasses] = React.useState([])
 
@@ -11,13 +14,18 @@ const CustomerDashboard = ({ user }) => {
     setWciClasses(user.wciClasses)
   }, [user])
 
-  console.log(user)
-
   return (
     <div className='m-2'>
       <CustomerAdminHeader />
       <div className='border rounded-lg container py-3 px-4 clientShow'>
-        <h5>Policy Details</h5>
+        <div className='d-flex align-items-center justify-content-between'>
+          <h5>Policy Details</h5>
+          <button
+            className='btn btn-sm'
+            style={{ color: 'white', backgroundColor: '#000356' }}
+            onClick={() => goPage(history, 'edit')}
+          >Edit</button>
+        </div>
         <div className='row pt-2'>
           <div className='col-sm-6'>Policy Number</div>
           <div className='col-sm-6 pl-4'>{user.policyNumber}</div>
@@ -268,4 +276,4 @@ const mapStateToProps = state => ({
   user: state.auth.user,
 })
 
-export default connect(mapStateToProps, {})(CustomerDashboard)
+export default connect(mapStateToProps, { goPage })(CustomerDashboard)

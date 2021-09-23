@@ -117,6 +117,10 @@ img {
   min-width: 150px !important;
 }
 
+.bg-admin table thead tr .insuAmount {
+  min-width: 150px !important;
+}
+
 
 /* CUSTOMER */
 .bg-admin .clientShow {
