@@ -9,6 +9,7 @@ const gravatar = require('gravatar')
 // Model
 const User = require('../../models/User')
 const Carrier = require('../../models/Carrier')
+const ClassInsu = require('../../models/ClassInsu')
 
 router.get('/getCarriers', async (req, res) => {
   const carriers = await Carrier.find()
@@ -20,6 +21,33 @@ router.get('/getCarriers', async (req, res) => {
 })
 
 router.post('/addCustomer', async (req, res) => {
+  const gliClasses = req.body.gliClasses
+  const wciClasses = req.body.wciClasses
+  let gliClassIds = []
+  let wciClassIds = []
+
+  for (var i = 0; i < gliClasses.length; i++) {
+    let newClassInsu = new ClassInsu({
+      name: gliClasses[i].className,
+      amount: gliClasses[i].amount,
+      rate: gliClasses[i].rate,
+      type: gliClasses[i].type,
+    })
+    await newClassInsu.save()
+    gliClassIds.push(newClassInsu._id)
+  }
+
+  for (var i = 0; i < wciClasses.length; i++) {
+    let newClassInsu = new ClassInsu({
+      name: wciClasses[i].className,
+      amount: wciClasses[i].amount,
+      rate: wciClasses[i].rate,
+      type: wciClasses[i].type,
+    })
+    await newClassInsu.save()
+    wciClassIds.push(newClassInsu._id)
+  }
+
   let newCustomer = new User({
     ...req.body
   })
@@ -33,6 +61,9 @@ router.post('/addCustomer', async (req, res) => {
   )
   newCustomer.avatar = avatar
 
+  newCustomer.gliClasses = gliClassIds
+  newCustomer.wciClasses = wciClassIds
+
   await newCustomer.save()
 
   res.json({
@@ -41,7 +72,7 @@ router.post('/addCustomer', async (req, res) => {
 })
 
 router.get('/getCustomers', async (req, res) => {
-  const customers = await User.find({ type: 'customer' })
+  const customers = await User.find({ type: 'customer' }).populate('classinsu')
 
   res.json({
     success: true,
@@ -58,7 +89,7 @@ router.post('/updateCustomerPriority/:id', async (req, res) => {
 })
 
 router.get('/getCustomer/:id', async (req, res) => {
-  const customer = await User.findById(req.params.id)
+  const customer = await User.findById(req.params.id).populate(['gliClasses', 'wciClasses'])
 
   res.json({
     success: true,

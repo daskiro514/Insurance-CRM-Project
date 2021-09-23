@@ -227,7 +227,7 @@ const userDashboard = ({ user }) => {
                 className='btn border rounded-lg'
                 style={{ backgroundColor: '#000356', color: 'white' }}
               >
-                <i class="material-icons" style={{fontSize: '16px'}}>&#xe870;</i> Submit Payment of $2350
+                <i className="material-icons" style={{fontSize: '16px'}}>&#xe870;</i> Submit Payment of $2350
               </button>
             </div>
           </div>

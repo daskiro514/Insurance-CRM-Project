@@ -4,9 +4,17 @@ import { getCustomer } from '../../../actions/admin'
 import MasterAdminHeader from './partials/MasterAdminHeader'
 
 const MasterAdminCustomer = ({ match, getCustomer, customer }) => {
+  const [gliClasses, setGliClasses] = React.useState([])
+  const [wciClasses, setWciClasses] = React.useState([])
+
   React.useEffect(() => {
     getCustomer(match.params.id)
   }, [match, getCustomer])
+
+  React.useEffect(() => {
+    setGliClasses(customer ? customer.gliClasses : [])
+    setWciClasses(customer ? customer.wciClasses : [])
+  }, [customer])
 
   return (
     <div className='m-2 main'>
@@ -34,7 +42,53 @@ const MasterAdminCustomer = ({ match, getCustomer, customer }) => {
             <div className='col-sm-6'>Policy Holder Email</div>
             <div className='col-sm-6 pl-4'>{customer.email}</div>
           </div>
-          <div className='row pt-3'>
+          <div className='table-responsive mt-4'>
+            <h5>General Liability Insurance</h5>
+            <table className='table table-borderless'>
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Class / Name</th>
+                  <th>Amount ($)</th>
+                  <th>Rate (%)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {gliClasses.map((item, index) => 
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{item.name}</td>
+                    <td>{item.amount}</td>
+                    <td>{item.rate}</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+          <div className='table-responsive mt-4'>
+            <h5>Worker's Compensation Insurance</h5>
+            <table className='table table-borderless'>
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Class / Name</th>
+                  <th>Amount</th>
+                  <th>Rate</th>
+                </tr>
+              </thead>
+              <tbody>
+                {wciClasses.map((item, index) => 
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{item.name}</td>
+                    <td>{item.amount}</td>
+                    <td>{item.rate}</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+          {/* <div className='row pt-3'>
             <div className='col-sm-6'>General Liability Class Description</div>
             <div className='col-sm-6 pl-4'>{customer.glcDescription}</div>
           </div>
@@ -53,7 +107,7 @@ const MasterAdminCustomer = ({ match, getCustomer, customer }) => {
           <div className='row'>
             <div className='col-sm-6'>Work Comp Class Rate</div>
             <div className='col-sm-6 pl-4'>{customer.wccRate}</div>
-          </div>
+          </div> */}
           <h5 className='pt-3'>Coverages</h5>
           <div className='row'>
             <div className='col-sm-6'>

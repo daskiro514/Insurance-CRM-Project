@@ -51,21 +51,18 @@ const UserSchema = new mongoose.Schema({
   ppmfeEndorsements: {
     type: Number
   },
-  glcDescription: {
-    type: String
-  },
-  glccoRate: {
-    type: Number
-  },
-  glcccoRate: {
-    type: Number
-  },
-  wccDescription: {
-    type: String
-  },
-  wccRate: {
-    type: Number
-  },
+  gliClasses: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'classinsu'
+    }
+  ],
+  wciClasses: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'classinsu'
+    }
+  ],
   priority: {
     type: String,
     default: 'low'

@@ -19,11 +19,6 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
     peDates: '2021-11-10',
     ppmfeEndorsements: 9702.36,
     email: 'client@king4.com',
-    // glcDescription: '',
-    // glccoRate: 0,
-    // glcccoRate: 0,
-    // wccDescription: '',
-    // wccRate: 0,
   })
 
   const { name, username, password, password2, carrier, policyNumber, companyName, peDates, ppmfeEndorsements, email } = formData
@@ -32,19 +27,19 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const [gliClasses, setGliClasses] = React.useState([
-    {
-      className: 'Automobile',
-      amount: 1000,
-      rate: 3.5,
-      type: 'Payroll'
-    }
-  ])
+  const [gliClasses, setGliClasses] = React.useState([])
+
+  const [wciClasses, setWciClasses] = React.useState([])
 
   const [className, setClassName] = React.useState('')
   const [amount, setAmount] = React.useState(0)
   const [rate, setRate] = React.useState(0)
   const [type, setType] = React.useState('Payroll')
+
+  const [className1, setClassName1] = React.useState('')
+  const [amount1, setAmount1] = React.useState(0)
+  const [rate1, setRate1] = React.useState(0)
+  const [type1, setType1] = React.useState('Payroll') 
 
   const saveClass = () => {
     const classForAdd = {
@@ -54,12 +49,35 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
       type: type
     }
     if (className.length === 0 || amount <= 0 || rate <= 0) {
-      console.log('ok')
       setAlert('You should input the Insurance variables correct!', 'warning')
     } else {
       let tempGliClasses = [...gliClasses]
       tempGliClasses.push(classForAdd)
       setGliClasses(tempGliClasses)
+      setClassName('')
+      setAmount(0)
+      setRate(0)
+      setType('Payroll')
+    }
+  }
+
+  const saveClass1 = () => {
+    const classForAdd = {
+      className: className1,
+      amount: amount1,
+      rate: rate1,
+      type: type1
+    }
+    if (className1.length === 0 || amount1 <= 0 || rate1 <= 0) {
+      setAlert('You should input the Insurance variables correct!', 'warning')
+    } else {
+      let tempClasses = [...wciClasses]
+      tempClasses.push(classForAdd)
+      setWciClasses(tempClasses)
+      setClassName1('')
+      setAmount1(0)
+      setRate1(0)
+      setType1('Payroll')
     }
   }
 
@@ -71,9 +89,24 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
     }
   }
 
+  const deleteClass1 = (index) => {
+    if (window.confirm('Are you sure?')) {
+      let tempClasses = [...wciClasses]
+      tempClasses.splice(index, 1)
+      setWciClasses(tempClasses)
+    }
+  }
+
   const onSubmit = e => {
     e.preventDefault()
-    addCustomer(formData, history)
+    if (gliClasses.length > 0 && wciClasses.length > 0) {
+      let sendData = {...formData}
+      sendData.gliClasses = gliClasses
+      sendData.wciClasses = wciClasses
+      addCustomer(sendData, history)
+    } else {
+      setAlert('You should have at least one Insurance Class', 'warning')
+    }
   }
 
   return (
@@ -285,62 +318,80 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
             </table>
           </div>
         </div>
-        {/* <div className='form-group'>
-          <label>General Liability Class Description</label>
-          <input
-            type='text'
-            className='form-control'
-            name='glcDescription'
-            value={glcDescription}
-            onChange={onChange}
-            required
-          />
-        </div>
         <div className='form-group'>
-          <label>General Liability Class Code Ongoing Rate (_%)</label>
-          <input
-            type='Number'
-            className='form-control'
-            name='glccoRate'
-            value={glccoRate}
-            onChange={onChange}
-            required
-          />
+          <h5>Worker's Compensation Insurance</h5>
+          <div className='table-responsive'>
+            <table className='table table-borderless'>
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Class / Name</th>
+                  <th>Amount</th>
+                  <th>Rate</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className='form'>
+                  <td></td>
+                  <td>
+                    <input
+                      type='text'
+                      className='form-control'
+                      name='className1'
+                      value={className1}
+                      onChange={e => setClassName1(e.target.value)}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type='number'
+                      className='form-control'
+                      name='amount1'
+                      value={amount1}
+                      onChange={e => setAmount1(e.target.value)}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type='number'
+                      className='form-control'
+                      name='rate1'
+                      value={rate1}
+                      onChange={e => setRate1(e.target.value)}
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type='button'
+                      className='form-control'
+                      onClick={() => saveClass1()}
+                      style={{ color: 'white', backgroundColor: '#007bff' }}
+                      value='SAVE'
+                    />
+                  </td>
+                </tr>
+                {wciClasses.map((item, index) =>
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{item.className}</td>
+                    <td>{item.amount}</td>
+                    <td>{item.rate}</td>
+                    <td>
+                      <input
+                        type='button'
+                        className='form-control'
+                        onClick={() => deleteClass1(index)}
+                        style={{ color: 'white', backgroundColor: '#dc3545' }}
+                        value='DELETE'
+                      />
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div className='form-group'>
-          <label>General Liability Class Code Completed Ops Rate (_%)</label>
-          <input
-            type='Number'
-            className='form-control'
-            name='glcccoRate'
-            value={glcccoRate}
-            onChange={onChange}
-            required
-          />
-        </div>
-        <div className='form-group'>
-          <label>Workers Comp Class Description</label>
-          <input
-            type='text'
-            className='form-control'
-            name='wccDescription'
-            value={wccDescription}
-            onChange={onChange}
-            required
-          />
-        </div>
-        <div className='form-group'>
-          <label>Workers Comp Class Rate (_$)</label>
-          <input
-            type='Number'
-            className='form-control'
-            name='wccRate'
-            value={wccRate}
-            onChange={onChange}
-            required
-          />
-        </div>
-         */}
         <div className='form-group'>
           <button type='submit' className='form-control btn-success' value='SUBMIT'>
             SUBMIT

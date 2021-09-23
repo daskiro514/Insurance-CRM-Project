@@ -9,19 +9,19 @@ const Alert = ({ alerts }) => {
     alerts.forEach(alert => {
       switch (alert.alertType) {
         case 'info':
-          NotificationManager.info('Info message', alert.msg, 1000)
+          NotificationManager.info('Info message', alert.msg, 2000)
           break
         case 'success':
-          NotificationManager.success('Success message', alert.msg, 1000)
+          NotificationManager.success('Success message', alert.msg, 2000)
           break
         case 'warning':
-          NotificationManager.warning('Warning message', alert.msg, 1000)
+          NotificationManager.warning('Warning message', alert.msg, 2000)
           break
         case 'danger':
-          NotificationManager.warning('Warning message', alert.msg, 1000)
+          NotificationManager.warning('Warning message', alert.msg, 2000)
           break
         case 'error':
-          NotificationManager.error('Error message', alert.msg, 1000)
+          NotificationManager.error('Error message', alert.msg, 2000)
           break
         default:
           break

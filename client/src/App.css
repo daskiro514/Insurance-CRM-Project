@@ -113,6 +113,10 @@ img {
   background-color: #eee;
 }
 
+.bg-admin table thead tr .insuType {
+  min-width: 150px !important;
+}
+
 
 /* CUSTOMER */
 .bg-admin .clientShow {
