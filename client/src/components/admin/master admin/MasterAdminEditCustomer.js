@@ -1,35 +1,51 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { addCustomer } from '../../../actions/admin'
+import { getCustomer, updateCustomer } from '../../../actions/admin'
 import { setAlert } from '../../../actions/alert'
 import MasterAdminHeader from './partials/MasterAdminHeader'
 
-const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
-  const history = useHistory()
+const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updateCustomer }) => {
+  let history = useHistory()
 
-  const [formData, setFormData] = React.useState({
-    name: '',
-    username: '',
-    password: '',
-    password2: '',
-    carrier: '',
-    policyNumber: '',
-    companyName: '',
-    peDates: '',
-    ppmfeEndorsements: 0,
-    email: '',
-  })
-
-  const { name, username, password, password2, carrier, policyNumber, companyName, peDates, ppmfeEndorsements, email } = formData
-
-  const onChange = e => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
+  const [policyNumber, setPolicyNumber] = React.useState('')
+  const [companyName, setCompanyName] = React.useState('')
+  const [peDates, setPeDates] = React.useState('2020-01-01')
+  const [ppmfeEndorsements, setPpmfeEndorsements] = React.useState(0)
+  const [email, setEmail] = React.useState('')
 
   const [gliClasses, setGliClasses] = React.useState([])
-
   const [wciClasses, setWciClasses] = React.useState([])
+
+  const formatDate = (date) => {
+    var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2)
+      month = '0' + month;
+    if (day.length < 2)
+      day = '0' + day;
+
+    return [year, month, day].join('-');
+  }
+
+  React.useEffect(() => {
+    getCustomer(match.params.id)
+  }, [match, getCustomer])
+
+  React.useEffect(() => {
+    if (customer) {
+      setPolicyNumber(customer.policyNumber)
+      setCompanyName(customer.companyName)
+      setPeDates(formatDate(customer.peDates))
+      setPpmfeEndorsements(customer.ppmfeEndorsements)
+      setEmail(customer.email)
+      setGliClasses(customer.gliClasses)
+      setWciClasses(customer.wciClasses)
+    }
+  }, [customer])
 
   const [className, setClassName] = React.useState('')
   const [amount, setAmount] = React.useState(0)
@@ -39,11 +55,11 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
   const [className1, setClassName1] = React.useState('')
   const [amount1, setAmount1] = React.useState(0)
   const [rate1, setRate1] = React.useState(0)
-  const [type1, setType1] = React.useState('Payroll') 
+  const [type1, setType1] = React.useState('Payroll')
 
   const saveClass = () => {
     const classForAdd = {
-      className: className,
+      name: className,
       amount: amount,
       rate: rate,
       type: type
@@ -63,7 +79,7 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
 
   const saveClass1 = () => {
     const classForAdd = {
-      className: className1,
+      name: className1,
       amount: amount1,
       rate: rate1,
       type: type1
@@ -100,10 +116,8 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
   const onSubmit = e => {
     e.preventDefault()
     if (gliClasses.length > 0 && wciClasses.length > 0) {
-      let sendData = {...formData}
-      sendData.gliClasses = gliClasses
-      sendData.wciClasses = wciClasses
-      addCustomer(sendData, history)
+      let sendData = { policyNumber, companyName, peDates, ppmfeEndorsements, email, gliClasses, wciClasses }
+      updateCustomer(sendData, history, customer._id)
     } else {
       setAlert('You should have at least one Insurance Class', 'warning')
     }
@@ -112,134 +126,75 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
   return (
     <div className='m-2 main'>
       <MasterAdminHeader />
-      <form className='p-4 form' onSubmit={onSubmit}>
-        <div className='h4 mb-3'>
-          Add Client
-        </div>
-        <div className='form-group'>
-          <label>Name of Client</label>
-          <input
-            type='text'
-            className='form-control'
-            name='name'
-            value={name}
-            onChange={onChange}
-            required
-          />
-        </div>
-        <div className='form-group'>
-          <label>Username of Client</label>
-          <input
-            type='text'
-            className='form-control'
-            name='username'
-            value={username}
-            onChange={onChange}
-            required
-          />
-        </div>
-        <div className='form-group'>
-          <label>Password</label>
-          <input
-            type='password'
-            className='form-control'
-            name='password'
-            value={password}
-            onChange={onChange}
-            minLength='6'
-          />
-        </div>
-        <div className='form-group'>
-          <label>Confirm Password</label>
-          <input
-            type='password'
-            className='form-control'
-            name='password2'
-            value={password2}
-            onChange={onChange}
-            minLength='6'
-          />
-        </div>
-        <div className='form-group'>
-          <label>Carrier</label>
-          <select
-            className='form-control'
-            name='carrier'
-            value={carrier}
-            onChange={onChange}
-            required
-          >
-            <option value=''>Choose Carrier...</option>
-            {carriers.map((carrier, index) =>
-              <option value={carrier._id} key={index}>{carrier.name}</option>
-            )}
-          </select>
-        </div>
-        <div className='form-group'>
-          <label>Policy Number</label>
-          <input
-            type='text'
-            className='form-control'
-            name='policyNumber'
-            value={policyNumber}
-            onChange={onChange}
-            required
-          />
-        </div>
-        <div className='form-group'>
-          <label>Name of Company/Policyholder</label>
-          <input
-            type='text'
-            className='form-control'
-            name='companyName'
-            value={companyName}
-            onChange={onChange}
-            required
-          />
-        </div>
-        <div className='form-group'>
-          <label>Policy Effective Dates</label>
-          <input
-            type='date'
-            className='form-control'
-            name='peDates'
-            value={peDates}
-            onChange={onChange}
-            required
-          />
-        </div>
-        <div className='form-group'>
-          <label>Policy Premium Minus Fully Earned Endorsements ($)</label>
-          <input
-            type='Number'
-            className='form-control'
-            name='ppmfeEndorsements'
-            value={ppmfeEndorsements}
-            onChange={onChange}
-            required
-          />
-        </div>
-        <div className='form-group'>
-          <label>Policy Holder Email</label>
-          <input
-            type='email'
-            className='form-control'
-            name='email'
-            value={email}
-            onChange={onChange}
-            required
-          />
-        </div>
-        <div className='form-group'>
-          <h5>General Liability Insurance</h5>
-          <div className='table-responsive'>
+      {customer ?
+        <form className='border rounded-lg container py-3 px-4 clientShow form' onSubmit={onSubmit}>
+          <div className='d-flex align-items-center justify-content-between'>
+            <h5>Policy Details</h5>
+          </div>
+          <div className='form-group'>
+            <label>Policy Number</label>
+            <input
+              type='text'
+              className='form-control'
+              name='policyNumber'
+              value={policyNumber}
+              onChange={e => setPolicyNumber(e.target.value)}
+              required
+            />
+          </div>
+          <div className='form-group'>
+            <label>Name of Company/Policyholder</label>
+            <input
+              type='text'
+              className='form-control'
+              name='companyName'
+              value={companyName}
+              onChange={e => setCompanyName(e.target.value)}
+              required
+            />
+          </div>
+          <div className='form-group'>
+            <label>Policy Effective Dates</label>
+            <input
+              type='date'
+              className='form-control'
+              name='peDates'
+              value={peDates}
+              onChange={e => setPeDates(e.target.value)}
+              required
+            />
+          </div>
+          <div className='form-group'>
+            <label>Policy Premium Minus Fully Earned Endorsements ($)</label>
+            <input
+              type='Number'
+              className='form-control'
+              name='ppmfeEndorsements'
+              value={ppmfeEndorsements}
+              onChange={e => setPpmfeEndorsements(e.target.value)}
+              required
+            />
+          </div>
+          <div className='form-group'>
+            <label>Policy Holder Email</label>
+            <input
+              type='email'
+              className='form-control'
+              name='email'
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className='table-responsive mt-4'>
+            <h5>General Liability Insurance</h5>
             <table className='table table-borderless'>
               <thead>
                 <tr>
                   <th>No</th>
                   <th>Class / Name</th>
-                  <th>Amount</th>
-                  <th>Rate</th>
+                  <th>Amount ($)</th>
+                  <th>Rate (%)</th>
                   <th className='insuType'>Type</th>
                   <th>Action</th>
                 </tr>
@@ -299,7 +254,7 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
                 {gliClasses.map((item, index) =>
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>{item.className}</td>
+                    <td>{item.name}</td>
                     <td>{item.amount}</td>
                     <td>{item.rate}</td>
                     <td>{item.type}</td>
@@ -317,17 +272,15 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
               </tbody>
             </table>
           </div>
-        </div>
-        <div className='form-group'>
-          <h5>Worker's Compensation Insurance</h5>
-          <div className='table-responsive'>
+          <div className='table-responsive mt-4'>
+            <h5>Worker's Compensation Insurance</h5>
             <table className='table table-borderless'>
               <thead>
                 <tr>
                   <th>No</th>
                   <th>Class / Name</th>
-                  <th>Amount</th>
-                  <th>Rate</th>
+                  <th>Amount ($)</th>
+                  <th>Rate (%)</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -374,7 +327,7 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
                 {wciClasses.map((item, index) =>
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>{item.className}</td>
+                    <td>{item.name}</td>
                     <td>{item.amount}</td>
                     <td>{item.rate}</td>
                     <td>
@@ -391,19 +344,21 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
               </tbody>
             </table>
           </div>
-        </div>
-        <div className='form-group'>
-          <button type='submit' className='form-control btn-success' value='SUBMIT'>
-            SUBMIT
-          </button>
-        </div>
-      </form>
+          <div className='form-group'>
+            <button type='submit' className='form-control btn-success' value='UPDATE'>
+              UPDATE
+            </button>
+          </div>
+        </form>
+        :
+        null
+      }
     </div>
   )
 }
 
 const mapStateToProps = state => ({
-  carriers: state.admin.carriers
+  customer: state.admin.adminCustomer
 })
 
-export default connect(mapStateToProps, { addCustomer, setAlert })(MasterAdminAddCustomer)
+export default connect(mapStateToProps, { getCustomer, setAlert, updateCustomer })(MasterAdminEditCustomer)

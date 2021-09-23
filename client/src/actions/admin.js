@@ -79,3 +79,12 @@ export const getCustomer = (customerID) => async dispatch => {
     })
   }
 }
+
+export const updateCustomer = (formData, history, customerID) => async dispatch => {
+  const response = await api.post(`/admin/updateCustomer/${customerID}`, formData)
+
+  if (response.data.success) {
+    dispatch(setAlert('Client Updated Successfully!', 'success'))
+    dispatch(goPage(history, ''))
+  }
+}

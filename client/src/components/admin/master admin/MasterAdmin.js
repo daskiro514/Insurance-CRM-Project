@@ -7,6 +7,7 @@ import MasterAdminCustomers from './MasterAdminCustomers'
 import MasterAdminCustomer from './MasterAdminCustomer'
 import MasterAdminAddCustomer from './MasterAdminAddCustomer'
 import MasterAdminCarrierCustomers from './MasterAdminCarrierCustomers'
+import MasterAdminEditCustomer from './MasterAdminEditCustomer'
 
 const MasterAdmin = () => {
 
@@ -19,6 +20,7 @@ const MasterAdmin = () => {
             <PrivateRoute exact path="/" component={MasterAdminCustomers} />
             <PrivateRoute exact path="/addCustomer" component={MasterAdminAddCustomer} />
             <PrivateRoute exact path="/customer/:id" component={MasterAdminCustomer} />
+            <PrivateRoute exact path="/editCustomer/:id" component={MasterAdminEditCustomer} />
             <PrivateRoute exact path="/carrier/:id" component={MasterAdminCarrierCustomers} />
           </Router>
           <MasterAdminCustomerPriorityEdit />

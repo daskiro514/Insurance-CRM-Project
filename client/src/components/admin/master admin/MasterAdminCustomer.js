@@ -2,8 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { getCustomer } from '../../../actions/admin'
 import MasterAdminHeader from './partials/MasterAdminHeader'
+import { goPage } from '../../../actions/admin'
+import { useHistory } from 'react-router-dom'
 
-const MasterAdminCustomer = ({ match, getCustomer, customer }) => {
+const MasterAdminCustomer = ({ match, getCustomer, customer, goPage }) => {
+  let history = useHistory()
   const [gliClasses, setGliClasses] = React.useState([])
   const [wciClasses, setWciClasses] = React.useState([])
 
@@ -21,7 +24,14 @@ const MasterAdminCustomer = ({ match, getCustomer, customer }) => {
       <MasterAdminHeader />
       {customer ?
         <div className='border rounded-lg container py-3 px-4 clientShow'>
-          <h5>Policy Details</h5>
+          <div className='d-flex align-items-center justify-content-between'>
+            <h5>Policy Details</h5>
+            <button
+              className='btn btn-sm'
+              style={{ color: 'white', backgroundColor: '#000356' }}
+              onClick={() => goPage(history, `editCustomer/${customer._id}`)}
+            >Edit</button>
+          </div>
           <div className='row pt-2'>
             <div className='col-sm-6'>Policy Number</div>
             <div className='col-sm-6 pl-4'>{customer.policyNumber}</div>
@@ -198,4 +208,4 @@ const mapStateToProps = state => ({
   customer: state.admin.adminCustomer
 })
 
-export default connect(mapStateToProps, { getCustomer })(MasterAdminCustomer)
+export default connect(mapStateToProps, { getCustomer, goPage })(MasterAdminCustomer)

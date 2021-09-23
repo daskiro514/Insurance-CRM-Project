@@ -26,12 +26,17 @@ router.post('/addCustomer', async (req, res) => {
   let gliClassIds = []
   let wciClassIds = []
 
+  let newCustomer = new User({
+    ...req.body
+  })
+
   for (var i = 0; i < gliClasses.length; i++) {
     let newClassInsu = new ClassInsu({
       name: gliClasses[i].className,
       amount: gliClasses[i].amount,
       rate: gliClasses[i].rate,
       type: gliClasses[i].type,
+      customer: newCustomer._id
     })
     await newClassInsu.save()
     gliClassIds.push(newClassInsu._id)
@@ -43,14 +48,11 @@ router.post('/addCustomer', async (req, res) => {
       amount: wciClasses[i].amount,
       rate: wciClasses[i].rate,
       type: wciClasses[i].type,
+      customer: newCustomer._id
     })
     await newClassInsu.save()
     wciClassIds.push(newClassInsu._id)
   }
-
-  let newCustomer = new User({
-    ...req.body
-  })
 
   newCustomer.type = 'customer'
   newCustomer.passwordForUpdate = req.body.password
@@ -94,6 +96,52 @@ router.get('/getCustomer/:id', async (req, res) => {
   res.json({
     success: true,
     customer
+  })
+})
+
+router.post('/updateCustomer/:id', async (req, res) => {
+  const gliClasses = req.body.gliClasses
+  const wciClasses = req.body.wciClasses
+  let gliClassIds = []
+  let wciClassIds = []
+
+  let update = {
+    ...req.body
+  }
+
+  await ClassInsu.deleteMany({ customer: req.params.id })
+
+  for (var i = 0; i < gliClasses.length; i++) {
+    let newClassInsu = new ClassInsu({
+      name: gliClasses[i].className,
+      amount: gliClasses[i].amount,
+      rate: gliClasses[i].rate,
+      type: gliClasses[i].type,
+      customer: req.params.id
+    })
+    await newClassInsu.save()
+    gliClassIds.push(newClassInsu._id)
+  }
+
+  for (var i = 0; i < wciClasses.length; i++) {
+    let newClassInsu = new ClassInsu({
+      name: wciClasses[i].className,
+      amount: wciClasses[i].amount,
+      rate: wciClasses[i].rate,
+      type: wciClasses[i].type,
+      customer: req.params.id
+    })
+    await newClassInsu.save()
+    wciClassIds.push(newClassInsu._id)
+  }
+
+  update.gliClasses = gliClassIds
+  update.wciClasses = wciClassIds
+
+  await User.findByIdAndUpdate(req.params.id, update, { new: true })
+
+  res.json({
+    success: true,
   })
 })
 

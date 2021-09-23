@@ -12,6 +12,10 @@ const ClassInsuSchema = new mongoose.Schema({
   },
   type: {
     type: String
+  },
+  customer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'user'
   }
 })
 
