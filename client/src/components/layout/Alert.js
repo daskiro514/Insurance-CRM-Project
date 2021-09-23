@@ -15,13 +15,13 @@ const Alert = ({ alerts }) => {
           NotificationManager.success('Success message', alert.msg, 1000)
           break
         case 'warning':
-          NotificationManager.warning('Warning message', alert.msg)
+          NotificationManager.warning('Warning message', alert.msg, 1000)
           break
         case 'danger':
-          NotificationManager.warning('Warning message', alert.msg)
+          NotificationManager.warning('Warning message', alert.msg, 1000)
           break
         case 'error':
-          NotificationManager.error('Error message', alert.msg)
+          NotificationManager.error('Error message', alert.msg, 1000)
           break
         default:
           break
