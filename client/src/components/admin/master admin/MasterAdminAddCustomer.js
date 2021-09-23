@@ -48,7 +48,7 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
       rate: rate,
       type: type
     }
-    if (className.length === 0 || amount <= 0 || rate <= 0) {
+    if (className.length === 0 || amount < 0 || rate <= 0) {
       setAlert('You should input the Insurance variables correct!', 'warning')
     } else {
       let tempGliClasses = [...gliClasses]
@@ -68,7 +68,7 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
       rate: rate1,
       type: type1
     }
-    if (className1.length === 0 || amount1 <= 0 || rate1 <= 0) {
+    if (className1.length === 0 || amount1 < 0 || rate1 <= 0) {
       setAlert('You should input the Insurance variables correct!', 'warning')
     } else {
       let tempClasses = [...wciClasses]
