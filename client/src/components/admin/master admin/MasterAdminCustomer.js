@@ -46,7 +46,7 @@ const MasterAdminCustomer = ({ match, getCustomer, customer, goPage }) => {
           </div>
           <div className='row'>
             <div className='col-sm-6'>Policy Effective Dates</div>
-            <div className='col-sm-6 pl-4'>{customer.peDates}</div>
+            <div className='col-sm-6 pl-4'>{customer.peDates.slice(0, 10)}</div>
           </div>
           <div className='row'>
             <div className='col-sm-6'>Policy Holder Email</div>

@@ -113,7 +113,7 @@ router.post('/updateCustomer/:id', async (req, res) => {
 
   for (var i = 0; i < gliClasses.length; i++) {
     let newClassInsu = new ClassInsu({
-      name: gliClasses[i].className,
+      name: gliClasses[i].name,
       amount: gliClasses[i].amount,
       rate: gliClasses[i].rate,
       type: gliClasses[i].type,
@@ -125,7 +125,7 @@ router.post('/updateCustomer/:id', async (req, res) => {
 
   for (var i = 0; i < wciClasses.length; i++) {
     let newClassInsu = new ClassInsu({
-      name: wciClasses[i].className,
+      name: wciClasses[i].name,
       amount: wciClasses[i].amount,
       rate: wciClasses[i].rate,
       type: wciClasses[i].type,

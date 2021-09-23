@@ -1,25 +1,21 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import alarm from '../../img/admin/alarm.svg'
-import userAvatar from '../../img/admin/userAvatar.png'
+import CustomerAdminHeader from './partials/CustomerAdminHeader'
 
-const userDashboard = ({ user }) => {
+const CustomerDashboard = ({ user }) => {
+  const [gliClasses, setGliClasses] = React.useState([])
+  const [wciClasses, setWciClasses] = React.useState([])
+
+  React.useEffect(() => {
+    setGliClasses(user.gliClasses)
+    setWciClasses(user.wciClasses)
+  }, [user])
+
+  console.log(user)
 
   return (
     <div className='m-2'>
-      <div className='row adminHeader d-flex align-items-center mb-3 mt-3'>
-        <div className='col-md-6 mr-auto'>
-          <h5><strong>{user.name}</strong> {user.companyName}</h5>
-          <p className='mb-0'>180 Jackson Street NE Tampa Florida 32285</p>
-        </div>
-        <div className='col-md-6 d-flex flex-row-reverse align-items-center'>
-          <div>
-            <img src={alarm} alt='ALARM' width='22px' className='mr-2' />
-            <span className='mr-2'>{user.name}</span>
-            <img src={user.avatar ? user.avatar : userAvatar} alt='AVATAR' className='rounded-circle' width='35px' />
-          </div>
-        </div>
-      </div>
+      <CustomerAdminHeader />
       <div className='border rounded-lg container py-3 px-4 clientShow'>
         <h5>Policy Details</h5>
         <div className='row pt-2'>
@@ -42,6 +38,59 @@ const userDashboard = ({ user }) => {
           <div className='col-sm-6'>Policy Holder Email</div>
           <div className='col-sm-6 pl-4'>{user.email}</div>
         </div>
+
+        <div className='table-responsive mt-4'>
+          <h5>General Liability Insurance</h5>
+          <table className='table table-borderless'>
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Class / Name</th>
+                <th>Amount ($)</th>
+                <th>Rate (%)</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              {gliClasses.map((item, index) =>
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{item.name}</td>
+                  <td>{item.amount}</td>
+                  <td>{item.rate}</td>
+                  <td>{item.type}</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div className='table-responsive mt-4'>
+          <h5>Worker's Compensation Insurance</h5>
+          <table className='table table-borderless'>
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Class / Name</th>
+                <th>Amount ($)</th>
+                <th>Rate (%)</th>
+                <th>Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              {wciClasses.map((item, index) =>
+                <tr key={index}>
+                  <td>{index + 1}</td>
+                  <td>{item.name}</td>
+                  <td>{item.amount}</td>
+                  <td>{item.rate}</td>
+                  <td>{item.type}</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+
         <div className='row pt-3'>
           <div className='col-sm-6'>General Liability Class Description</div>
           <div className='col-sm-6 pl-4'>{user.glcDescription}</div>
@@ -227,7 +276,7 @@ const userDashboard = ({ user }) => {
                 className='btn border rounded-lg'
                 style={{ backgroundColor: '#000356', color: 'white' }}
               >
-                <i className="material-icons" style={{fontSize: '16px'}}>&#xe870;</i> Submit Payment of $2350
+                <i className="material-icons" style={{ fontSize: '16px' }}>&#xe870;</i> Submit Payment of $2350
               </button>
             </div>
           </div>
@@ -241,4 +290,4 @@ const mapStateToProps = state => ({
   user: state.auth.user,
 })
 
-export default connect(mapStateToProps, {})(userDashboard)
+export default connect(mapStateToProps, {})(CustomerDashboard)
