@@ -57,6 +57,30 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
   const [rate1, setRate1] = React.useState(0)
   const [type1, setType1] = React.useState('Payroll')
 
+  const calculatePpmfeEndorsements = (gliClasses, wciClasses) => {
+    let tempPpmfe = 0
+    for (var i = 0; i < gliClasses.length; i++) {
+      let average = gliClasses[i].amount / 9
+      let estiPayTotal = average * 12
+      let premium = 0
+      if (type === 'Sales') {
+        premium = estiPayTotal / 100 * gliClasses[i].rate
+      } else {
+        premium = estiPayTotal / 1000 * gliClasses[i].rate
+      }
+      tempPpmfe += premium
+    }
+
+    for (i = 0; i < wciClasses.length; i++) {
+      let average = gliClasses[i].amount / 9
+      let estiPayTotal = average * 12
+      let premium = 0
+      premium = estiPayTotal / 1000 * gliClasses[i].rate
+      tempPpmfe += premium
+    }
+    setPpmfeEndorsements(tempPpmfe)
+  }
+
   const saveClass = () => {
     const classForAdd = {
       name: className,
@@ -69,6 +93,9 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
     } else {
       let tempGliClasses = [...gliClasses]
       tempGliClasses.push(classForAdd)
+
+      calculatePpmfeEndorsements(tempGliClasses, wciClasses)
+
       setGliClasses(tempGliClasses)
       setClassName('')
       setAmount(0)
@@ -89,6 +116,9 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
     } else {
       let tempClasses = [...wciClasses]
       tempClasses.push(classForAdd)
+
+      calculatePpmfeEndorsements(gliClasses, tempClasses)
+
       setWciClasses(tempClasses)
       setClassName1('')
       setAmount1(0)
@@ -101,6 +131,7 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
     if (window.confirm('Are you sure?')) {
       let tempGliClasses = [...gliClasses]
       tempGliClasses.splice(index, 1)
+      calculatePpmfeEndorsements(tempGliClasses, wciClasses)
       setGliClasses(tempGliClasses)
     }
   }
@@ -109,6 +140,7 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
     if (window.confirm('Are you sure?')) {
       let tempClasses = [...wciClasses]
       tempClasses.splice(index, 1)
+      calculatePpmfeEndorsements(gliClasses, tempClasses)
       setWciClasses(tempClasses)
     }
   }
@@ -172,6 +204,8 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
               name='ppmfeEndorsements'
               value={ppmfeEndorsements}
               onChange={e => setPpmfeEndorsements(e.target.value)}
+              disabled={true}
+              style={{ cursor: 'not-allowed' }}
               required
             />
           </div>

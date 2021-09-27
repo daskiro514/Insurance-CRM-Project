@@ -3,8 +3,9 @@ import { connect } from 'react-redux'
 import { useHistory } from 'react-router'
 import CustomerAdminHeader from './partials/CustomerAdminHeader'
 import { updateOnCustomer } from '../../actions/customer'
+import { setAlert } from '../../actions/alert'
 
-const CustomerEdit = ({ user, updateOnCustomer }) => {
+const CustomerEdit = ({ user, updateOnCustomer, setAlert }) => {
   let history = useHistory()
   const [email, setEmail] = React.useState('')
   const [gliClasses, setGliClasses] = React.useState([])
@@ -17,15 +18,19 @@ const CustomerEdit = ({ user, updateOnCustomer }) => {
   }, [user])
 
   const setAmount = (target, amount, index) => {
-    if (target === 'gli') {
-      let tempClasses = [...gliClasses]
-      tempClasses[index].amount = amount
-      setGliClasses(tempClasses)
-    }
-    if (target === 'wci') {
-      let tempClasses = [...wciClasses]
-      tempClasses[index].amount = amount
-      setWciClasses(tempClasses)
+    if (amount <= 0) {
+      setAlert('You should input the amount value correct!', 'danger')
+    } else {
+      if (target === 'gli') {
+        let tempClasses = [...gliClasses]
+        tempClasses[index].amount = amount
+        setGliClasses(tempClasses)
+      }
+      if (target === 'wci') {
+        let tempClasses = [...wciClasses]
+        tempClasses[index].amount = amount
+        setWciClasses(tempClasses)
+      }
     }
   }
 
@@ -138,4 +143,4 @@ const mapStateToProps = state => ({
   user: state.auth.user,
 })
 
-export default connect(mapStateToProps, { updateOnCustomer })(CustomerEdit)
+export default connect(mapStateToProps, { updateOnCustomer, setAlert })(CustomerEdit)

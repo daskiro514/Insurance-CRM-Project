@@ -39,7 +39,31 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
   const [className1, setClassName1] = React.useState('')
   const [amount1, setAmount1] = React.useState(0)
   const [rate1, setRate1] = React.useState(0)
-  const [type1, setType1] = React.useState('Payroll') 
+  const [type1, setType1] = React.useState('Payroll')
+
+  const calculatePpmfeEndorsements = (gliClasses, wciClasses) => {
+    let tempPpmfe = 0
+    for (var i = 0; i < gliClasses.length; i++) {
+      let average = gliClasses[i].amount / 9
+      let estiPayTotal = (average * 12).toFixed(2)
+      let premium = 0
+      if (type === 'Sales') {
+        premium = estiPayTotal / 100 * gliClasses[i].rate
+      } else {
+        premium = estiPayTotal / 1000 * gliClasses[i].rate
+      }
+      tempPpmfe += premium
+    }
+
+    for (i = 0; i < wciClasses.length; i++) {
+      let average = gliClasses[i].amount / 9
+      let estiPayTotal = (average * 12).toFixed(2)
+      let premium = 0
+      premium = estiPayTotal / 1000 * gliClasses[i].rate
+      tempPpmfe += premium
+    }
+    setFormData({ ...formData, ppmfeEndorsements: tempPpmfe })
+  }
 
   const saveClass = () => {
     const classForAdd = {
@@ -53,6 +77,9 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
     } else {
       let tempGliClasses = [...gliClasses]
       tempGliClasses.push(classForAdd)
+
+      calculatePpmfeEndorsements(tempGliClasses, wciClasses)
+
       setGliClasses(tempGliClasses)
       setClassName('')
       setAmount(0)
@@ -73,6 +100,9 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
     } else {
       let tempClasses = [...wciClasses]
       tempClasses.push(classForAdd)
+
+      calculatePpmfeEndorsements(gliClasses, tempClasses)
+
       setWciClasses(tempClasses)
       setClassName1('')
       setAmount1(0)
@@ -85,6 +115,7 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
     if (window.confirm('Are you sure?')) {
       let tempGliClasses = [...gliClasses]
       tempGliClasses.splice(index, 1)
+      calculatePpmfeEndorsements(tempGliClasses, wciClasses)
       setGliClasses(tempGliClasses)
     }
   }
@@ -93,6 +124,7 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
     if (window.confirm('Are you sure?')) {
       let tempClasses = [...wciClasses]
       tempClasses.splice(index, 1)
+      calculatePpmfeEndorsements(gliClasses, tempClasses)
       setWciClasses(tempClasses)
     }
   }
@@ -100,7 +132,7 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
   const onSubmit = e => {
     e.preventDefault()
     if (gliClasses.length > 0 && wciClasses.length > 0) {
-      let sendData = {...formData}
+      let sendData = { ...formData }
       sendData.gliClasses = gliClasses
       sendData.wciClasses = wciClasses
       addCustomer(sendData, history)
@@ -216,6 +248,8 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
             name='ppmfeEndorsements'
             value={ppmfeEndorsements}
             onChange={onChange}
+            disabled={true}
+            style={{ cursor: 'not-allowed' }}
             required
           />
         </div>
