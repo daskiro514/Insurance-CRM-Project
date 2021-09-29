@@ -3,15 +3,32 @@ import { connect } from 'react-redux'
 import { goPage } from '../../actions/admin'
 import { useHistory } from 'react-router'
 import CustomerAdminHeader from './partials/CustomerAdminHeader'
+import formatDate from '../../utils/formatDate1'
 
 const CustomerDashboard = ({ user, goPage }) => {
   let history = useHistory()
   const [gliClasses, setGliClasses] = React.useState([])
   const [wciClasses, setWciClasses] = React.useState([])
+  const [premium, setPremium] = React.useState(0)
 
   React.useEffect(() => {
     setGliClasses(user.gliClasses)
     setWciClasses(user.wciClasses)
+
+    // PREMIUM CALCULATE
+    var totalPremium = 0
+    user.gliClasses.forEach(element => {
+      if (element.type === 'Sales') {
+        totalPremium += (element.amount / 9 * 12 / 100 * element.rate)
+      } else {
+        totalPremium += (element.amount / 9 * 12 / 1000 * element.rate)
+      }
+    })
+    user.wciClasses.forEach(element => {
+      totalPremium += (element.amount / 9 * 12 / 1000 * element.rate)
+    })
+
+    setPremium((totalPremium - user.paidPremium).toFixed(2))
   }, [user])
 
   return (
@@ -28,19 +45,23 @@ const CustomerDashboard = ({ user, goPage }) => {
         </div>
         <div className='row pt-2'>
           <div className='col-sm-6'>Policy Number</div>
-          <div className='col-sm-6 pl-4'>{user.policyNumber}</div>
-        </div>
-        <div className='row'>
-          <div className='col-sm-6'>Company/Policyholder</div>
-          <div className='col-sm-6 pl-4'>{user.companyName}</div>
-        </div>
-        <div className='row'>
-          <div className='col-sm-6'>Policy Premium</div>
-          <div className='col-sm-6 pl-4'>{user.ppmfeEndorsements}</div>
+          <div className='col-sm-6 pl-4'>{user._id}</div>
         </div>
         <div className='row'>
           <div className='col-sm-6'>Policy Effective Dates</div>
-          <div className='col-sm-6 pl-4'>{user.peDates.slice(0, 10)}</div>
+          <div className='col-sm-6 pl-4'>{formatDate(user.peDatesFrom)} ~ {formatDate(user.peDatesTill)}</div>
+        </div>
+        <div className='row'>
+          <div className='col-sm-6'>Premium Due Date</div>
+          <div className='col-sm-6 pl-4'>{formatDate(user.peDatesTill)}</div>
+        </div>
+        <div className='row'>
+          <div className='col-sm-6'>Policy Premium</div>
+          <div className='col-sm-6 pl-4'><span className={'badge ' + (premium < 0 ? 'badge-primary ' : 'badge-danger')}>$ {premium}</span></div>
+        </div>
+        <div className='row pt-3'>
+          <div className='col-sm-6'>Company/Policyholder</div>
+          <div className='col-sm-6 pl-4'>{user.companyName}</div>
         </div>
         <div className='row'>
           <div className='col-sm-6'>Policy Holder Email</div>
@@ -192,7 +213,7 @@ const CustomerDashboard = ({ user, goPage }) => {
             </div>
           </div>
         </div>
-        <div className='col-md-6'>
+        {/* <div className='col-md-6'>
           <div className='border rounded-lg container py-3 px-4 clientShow'>
             <h5>Payment Portal</h5>
             <div className='row pb-2'>
@@ -262,11 +283,11 @@ const CustomerDashboard = ({ user, goPage }) => {
                 className='btn border rounded-lg'
                 style={{ backgroundColor: '#000356', color: 'white' }}
               >
-                <i className="material-icons" style={{ fontSize: '16px' }}>&#xe870;</i> Submit Payment of $2350
+                <i className="material-icons" style={{ fontSize: '16px' }}>&#xe870;</i> Submit Payment of $ {premium}
               </button>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   )

@@ -8,11 +8,13 @@ import { setAlert } from '../../actions/alert'
 const CustomerEdit = ({ user, updateOnCustomer, setAlert }) => {
   let history = useHistory()
   const [email, setEmail] = React.useState('')
+  const [companyName, setCompanyName] = React.useState('')
   const [gliClasses, setGliClasses] = React.useState([])
   const [wciClasses, setWciClasses] = React.useState([])
 
   React.useEffect(() => {
     setEmail(user.email)
+    setCompanyName(user.companyName)
     setGliClasses(user.gliClasses)
     setWciClasses(user.wciClasses)
   }, [user])
@@ -35,7 +37,7 @@ const CustomerEdit = ({ user, updateOnCustomer, setAlert }) => {
   }
 
   const update = () => {
-    updateOnCustomer({email, gliClasses, wciClasses}, history, user._id)
+    updateOnCustomer({ email, companyName, gliClasses, wciClasses }, history, user._id)
   }
 
   return (
@@ -45,16 +47,33 @@ const CustomerEdit = ({ user, updateOnCustomer, setAlert }) => {
         <div className='d-flex align-items-center justify-content-between'>
           <h5>Policy Details</h5>
         </div>
-        <div className='row pt-2'>
-          <div className='col-sm-6'>Policy Number</div>
-          <div className='col-sm-6 pl-4'>{user.policyNumber}</div>
+        <div className='form-group pt-2'>
+          <label>Policy Number</label>
+          <input
+            type='email'
+            style={{ cursor: 'not-allowed' }}
+            className='form-control bg-light'
+            name='email'
+            defaultValue={user._id}
+            disabled
+          />
         </div>
-        <div className='form-group pt-1'>
+        <div className='form-group'>
+          <label>Name of Company/Policyholder</label>
+          <input
+            type='text'
+            className='form-control bg-light'
+            name='companyName'
+            value={companyName}
+            onChange={e => setCompanyName(e.target.value)}
+            required
+          />
+        </div>
+        <div className='form-group'>
           <label>Policy Holder Email</label>
           <input
             type='email'
-            style={{ backgroundColor: '#eee' }}
-            className='form-control'
+            className='form-control bg-light'
             name='email'
             value={email}
             onChange={e => setEmail(e.target.value)}
@@ -82,8 +101,7 @@ const CustomerEdit = ({ user, updateOnCustomer, setAlert }) => {
                   <td>
                     <input
                       type='number'
-                      style={{ backgroundColor: '#eee' }}
-                      className='form-control'
+                      className='form-control bg-light'
                       value={item.amount}
                       onChange={e => setAmount('gli', e.target.value, index)}
                       required
@@ -116,8 +134,7 @@ const CustomerEdit = ({ user, updateOnCustomer, setAlert }) => {
                   <td>
                     <input
                       type='number'
-                      style={{ backgroundColor: '#eee' }}
-                      className='form-control'
+                      className='form-control bg-light'
                       value={item.amount}
                       onChange={e => setAmount('wci', e.target.value, index)}
                       required

@@ -9,7 +9,10 @@ router.post('/updateOnCustomer/:id', async (req, res) => {
   const gliClasses = req.body.gliClasses
   const wciClasses = req.body.wciClasses
 
-  await User.findByIdAndUpdate(req.params.id, { email: req.body.email })
+  await User.findByIdAndUpdate(req.params.id, { 
+    email: req.body.email,
+    companyName: req.body.companyName
+  })
 
   for (var i = 0; i < gliClasses.length; i++) {
     await ClassInsu.findByIdAndUpdate(gliClasses[i]._id, {amount: gliClasses[i].amount})

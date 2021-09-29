@@ -22,6 +22,9 @@ const CustomerSidebar = ({ logout }) => {
         <div className='row mx-3 my-1 menuItem' onClick={() => goPage('')}>
           <i className='fas fa-user-friends'></i>My Account
         </div>
+        <div className='row mx-3 my-1 menuItem' onClick={() => goPage('payment')}>
+          <i className='fas fa-comment-dollar'></i>Payment
+        </div>
         <div className='row mx-3 menuItem signoutLink' onClick={logout}>
           &#8601; Sign Out
         </div>

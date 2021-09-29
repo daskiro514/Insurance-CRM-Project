@@ -4,6 +4,7 @@ import PrivateRoute from '../routing/PrivateRoute'
 import CustomerSidbar from './CustomerSidebar'
 import CustomerDashboard from './CustomerDashboard'
 import CustomerEdit from './CustomerEdit'
+import CustomerPayment from './CustomerPayment'
 
 const CustomerHome = () => {
 
@@ -15,6 +16,7 @@ const CustomerHome = () => {
           <Router basename="/home">
             <PrivateRoute exact path="/" component={CustomerDashboard} />
             <PrivateRoute exact path="/edit" component={CustomerEdit} />
+            <PrivateRoute exact path="/payment" component={CustomerPayment} />
           </Router>
         </div>
       </div>

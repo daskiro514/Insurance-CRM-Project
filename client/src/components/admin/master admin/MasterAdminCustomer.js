@@ -65,7 +65,7 @@ const MasterAdminCustomer = ({ match, getCustomer, customer, goPage }) => {
           </div>
           <div className='row'>
             <div className='col-sm-6'>Policy Premium</div>
-            <div className='col-sm-6 pl-4'>{premium}</div>
+            <div className='col-sm-6 pl-4'><span className={'badge ' + (premium < 0 ? 'badge-primary ' : 'badge-danger')}>$ {premium}</span></div>
           </div>
           <div className='row pt-3'>
             <div className='col-sm-6'>Company/Policyholder</div>
