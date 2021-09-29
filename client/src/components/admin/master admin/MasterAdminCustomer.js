@@ -4,19 +4,38 @@ import { getCustomer } from '../../../actions/admin'
 import MasterAdminHeader from './partials/MasterAdminHeader'
 import { goPage } from '../../../actions/admin'
 import { useHistory } from 'react-router-dom'
+import formatDate from '../../../utils/formatDate1'
 
 const MasterAdminCustomer = ({ match, getCustomer, customer, goPage }) => {
   let history = useHistory()
   const [gliClasses, setGliClasses] = React.useState([])
   const [wciClasses, setWciClasses] = React.useState([])
+  const [premium, setPremium] = React.useState(0)
 
   React.useEffect(() => {
     getCustomer(match.params.id)
   }, [match, getCustomer])
 
   React.useEffect(() => {
-    setGliClasses(customer ? customer.gliClasses : [])
-    setWciClasses(customer ? customer.wciClasses : [])
+    if (customer) {
+      setGliClasses(customer.gliClasses)
+      setWciClasses(customer.wciClasses)
+
+      // PREMIUM CALCULATE
+      var totalPremium = 0
+      customer.gliClasses.forEach(element => {
+        if (element.type === 'Sales') {
+          totalPremium += (element.amount / 9 * 12 / 100 * element.rate)
+        } else {
+          totalPremium += (element.amount / 9 * 12 / 1000 * element.rate)
+        }
+      })
+      customer.wciClasses.forEach(element => {
+        totalPremium += (element.amount / 9 * 12 / 1000 * element.rate)
+      })
+
+      setPremium((totalPremium - customer.paidPremium).toFixed(2))
+    }
   }, [customer])
 
   return (
@@ -34,19 +53,23 @@ const MasterAdminCustomer = ({ match, getCustomer, customer, goPage }) => {
           </div>
           <div className='row pt-2'>
             <div className='col-sm-6'>Policy Number</div>
-            <div className='col-sm-6 pl-4'>{customer.policyNumber}</div>
-          </div>
-          <div className='row'>
-            <div className='col-sm-6'>Company/Policyholder</div>
-            <div className='col-sm-6 pl-4'>{customer.companyName}</div>
-          </div>
-          <div className='row'>
-            <div className='col-sm-6'>Policy Premium</div>
-            <div className='col-sm-6 pl-4'>{customer.ppmfeEndorsements}</div>
+            <div className='col-sm-6 pl-4'>{customer._id}</div>
           </div>
           <div className='row'>
             <div className='col-sm-6'>Policy Effective Dates</div>
-            <div className='col-sm-6 pl-4'>{customer.peDates.slice(0, 10)}</div>
+            <div className='col-sm-6 pl-4'>{formatDate(customer.peDatesFrom)} ~ {formatDate(customer.peDatesTill)}</div>
+          </div>
+          <div className='row'>
+            <div className='col-sm-6'>Premium Due Date</div>
+            <div className='col-sm-6 pl-4'>{formatDate(customer.peDatesTill)}</div>
+          </div>
+          <div className='row'>
+            <div className='col-sm-6'>Policy Premium</div>
+            <div className='col-sm-6 pl-4'>{premium}</div>
+          </div>
+          <div className='row pt-3'>
+            <div className='col-sm-6'>Company/Policyholder</div>
+            <div className='col-sm-6 pl-4'>{customer.companyName}</div>
           </div>
           <div className='row'>
             <div className='col-sm-6'>Policy Holder Email</div>

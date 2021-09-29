@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { getCustomer, updateCustomer } from '../../../actions/admin'
 import { setAlert } from '../../../actions/alert'
+import formatDate from '../../../utils/formatDate1'
 import MasterAdminHeader from './partials/MasterAdminHeader'
 
 const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updateCustomer }) => {
@@ -10,26 +11,12 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
 
   const [policyNumber, setPolicyNumber] = React.useState('')
   const [companyName, setCompanyName] = React.useState('')
-  const [peDates, setPeDates] = React.useState('2020-01-01')
-  const [ppmfeEndorsements, setPpmfeEndorsements] = React.useState(0)
+  const [peDatesFrom, setPeDatesFrom] = React.useState('2020-01-01')
+  const [peDatesTill, setPeDatesTill] = React.useState('2020-01-01')
   const [email, setEmail] = React.useState('')
 
   const [gliClasses, setGliClasses] = React.useState([])
   const [wciClasses, setWciClasses] = React.useState([])
-
-  const formatDate = (date) => {
-    var d = new Date(date),
-      month = '' + (d.getMonth() + 1),
-      day = '' + d.getDate(),
-      year = d.getFullYear();
-
-    if (month.length < 2)
-      month = '0' + month;
-    if (day.length < 2)
-      day = '0' + day;
-
-    return [year, month, day].join('-');
-  }
 
   React.useEffect(() => {
     getCustomer(match.params.id)
@@ -37,10 +24,10 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
 
   React.useEffect(() => {
     if (customer) {
-      setPolicyNumber(customer.policyNumber)
+      setPolicyNumber(customer._id)
       setCompanyName(customer.companyName)
-      setPeDates(formatDate(customer.peDates))
-      setPpmfeEndorsements(customer.ppmfeEndorsements)
+      setPeDatesFrom(formatDate(customer.peDatesFrom))
+      setPeDatesTill(formatDate(customer.peDatesTill))
       setEmail(customer.email)
       setGliClasses(customer.gliClasses)
       setWciClasses(customer.wciClasses)
@@ -57,30 +44,6 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
   const [rate1, setRate1] = React.useState(0)
   const [type1, setType1] = React.useState('Payroll')
 
-  const calculatePpmfeEndorsements = (gliClasses, wciClasses) => {
-    let tempPpmfe = 0
-    for (var i = 0; i < gliClasses.length; i++) {
-      let average = gliClasses[i].amount / 9
-      let estiPayTotal = average * 12
-      let premium = 0
-      if (type === 'Sales') {
-        premium = estiPayTotal / 100 * gliClasses[i].rate
-      } else {
-        premium = estiPayTotal / 1000 * gliClasses[i].rate
-      }
-      tempPpmfe += premium
-    }
-
-    for (i = 0; i < wciClasses.length; i++) {
-      let average = gliClasses[i].amount / 9
-      let estiPayTotal = average * 12
-      let premium = 0
-      premium = estiPayTotal / 1000 * gliClasses[i].rate
-      tempPpmfe += premium
-    }
-    setPpmfeEndorsements(tempPpmfe)
-  }
-
   const saveClass = () => {
     const classForAdd = {
       name: className,
@@ -93,9 +56,6 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
     } else {
       let tempGliClasses = [...gliClasses]
       tempGliClasses.push(classForAdd)
-
-      calculatePpmfeEndorsements(tempGliClasses, wciClasses)
-
       setGliClasses(tempGliClasses)
       setClassName('')
       setAmount(0)
@@ -116,9 +76,6 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
     } else {
       let tempClasses = [...wciClasses]
       tempClasses.push(classForAdd)
-
-      calculatePpmfeEndorsements(gliClasses, tempClasses)
-
       setWciClasses(tempClasses)
       setClassName1('')
       setAmount1(0)
@@ -131,7 +88,6 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
     if (window.confirm('Are you sure?')) {
       let tempGliClasses = [...gliClasses]
       tempGliClasses.splice(index, 1)
-      calculatePpmfeEndorsements(tempGliClasses, wciClasses)
       setGliClasses(tempGliClasses)
     }
   }
@@ -140,7 +96,6 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
     if (window.confirm('Are you sure?')) {
       let tempClasses = [...wciClasses]
       tempClasses.splice(index, 1)
-      calculatePpmfeEndorsements(gliClasses, tempClasses)
       setWciClasses(tempClasses)
     }
   }
@@ -148,7 +103,7 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
   const onSubmit = e => {
     e.preventDefault()
     if (gliClasses.length > 0 && wciClasses.length > 0) {
-      let sendData = { policyNumber, companyName, peDates, ppmfeEndorsements, email, gliClasses, wciClasses }
+      let sendData = { policyNumber, companyName, peDatesFrom, peDatesTill, email, gliClasses, wciClasses }
       updateCustomer(sendData, history, customer._id)
     } else {
       setAlert('You should have at least one Insurance Class', 'warning')
@@ -171,6 +126,8 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
               name='policyNumber'
               value={policyNumber}
               onChange={e => setPolicyNumber(e.target.value)}
+              disabled
+              style={{ cursor: 'not-allowed' }}
               required
             />
           </div>
@@ -185,29 +142,31 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
               required
             />
           </div>
-          <div className='form-group'>
+          <div>
             <label>Policy Effective Dates</label>
-            <input
-              type='date'
-              className='form-control'
-              name='peDates'
-              value={peDates}
-              onChange={e => setPeDates(e.target.value)}
-              required
-            />
-          </div>
-          <div className='form-group'>
-            <label>Policy Premium Minus Fully Earned Endorsements ($)</label>
-            <input
-              type='Number'
-              className='form-control'
-              name='ppmfeEndorsements'
-              value={ppmfeEndorsements}
-              onChange={e => setPpmfeEndorsements(e.target.value)}
-              disabled={true}
-              style={{ cursor: 'not-allowed' }}
-              required
-            />
+            <div className='row'>
+              <div className='form-group col-sm-5 peDates'>
+                <input
+                  type='date'
+                  className='form-control'
+                  name='peDatesFrom'
+                  value={peDatesFrom}
+                  onChange={e => setPeDatesFrom(e.target.value)}
+                  required
+                />
+              </div>
+              <div className='form-group col-sm-2 text-center'> ~ </div>
+              <div className='form-group col-sm-5 peDates'>
+                <input
+                  type='date'
+                  className='form-control'
+                  name='peDatesTill'
+                  value={peDatesTill}
+                  onChange={e => setPeDatesTill(e.target.value)}
+                  required
+                />
+              </div>
+            </div>
           </div>
           <div className='form-group'>
             <label>Policy Holder Email</label>

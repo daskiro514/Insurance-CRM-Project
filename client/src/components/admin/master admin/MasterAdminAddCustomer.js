@@ -14,14 +14,13 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
     password: '',
     password2: '',
     carrier: '',
-    policyNumber: '',
     companyName: '',
-    peDates: '',
-    ppmfeEndorsements: 0,
+    peDatesFrom: '',
+    peDatesTill: '',
     email: '',
   })
 
-  const { name, username, password, password2, carrier, policyNumber, companyName, peDates, ppmfeEndorsements, email } = formData
+  const { name, username, password, password2, carrier, companyName, peDatesFrom, peDatesTill, email } = formData
 
   const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -41,30 +40,6 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
   const [rate1, setRate1] = React.useState(0)
   const [type1, setType1] = React.useState('Payroll')
 
-  const calculatePpmfeEndorsements = (gliClasses, wciClasses) => {
-    let tempPpmfe = 0
-    for (var i = 0; i < gliClasses.length; i++) {
-      let average = gliClasses[i].amount / 9
-      let estiPayTotal = (average * 12).toFixed(2)
-      let premium = 0
-      if (type === 'Sales') {
-        premium = estiPayTotal / 100 * gliClasses[i].rate
-      } else {
-        premium = estiPayTotal / 1000 * gliClasses[i].rate
-      }
-      tempPpmfe += premium
-    }
-
-    for (i = 0; i < wciClasses.length; i++) {
-      let average = gliClasses[i].amount / 9
-      let estiPayTotal = (average * 12).toFixed(2)
-      let premium = 0
-      premium = estiPayTotal / 1000 * gliClasses[i].rate
-      tempPpmfe += premium
-    }
-    setFormData({ ...formData, ppmfeEndorsements: tempPpmfe })
-  }
-
   const saveClass = () => {
     const classForAdd = {
       className: className,
@@ -77,9 +52,6 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
     } else {
       let tempGliClasses = [...gliClasses]
       tempGliClasses.push(classForAdd)
-
-      calculatePpmfeEndorsements(tempGliClasses, wciClasses)
-
       setGliClasses(tempGliClasses)
       setClassName('')
       setAmount(0)
@@ -100,9 +72,6 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
     } else {
       let tempClasses = [...wciClasses]
       tempClasses.push(classForAdd)
-
-      calculatePpmfeEndorsements(gliClasses, tempClasses)
-
       setWciClasses(tempClasses)
       setClassName1('')
       setAmount1(0)
@@ -115,7 +84,6 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
     if (window.confirm('Are you sure?')) {
       let tempGliClasses = [...gliClasses]
       tempGliClasses.splice(index, 1)
-      calculatePpmfeEndorsements(tempGliClasses, wciClasses)
       setGliClasses(tempGliClasses)
     }
   }
@@ -124,18 +92,19 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
     if (window.confirm('Are you sure?')) {
       let tempClasses = [...wciClasses]
       tempClasses.splice(index, 1)
-      calculatePpmfeEndorsements(gliClasses, tempClasses)
       setWciClasses(tempClasses)
     }
   }
 
   const onSubmit = e => {
     e.preventDefault()
-    if (gliClasses.length > 0 && wciClasses.length > 0) {
+    if (gliClasses.length > 0 && wciClasses.length > 0 && peDatesTill > peDatesFrom) {
       let sendData = { ...formData }
       sendData.gliClasses = gliClasses
       sendData.wciClasses = wciClasses
       addCustomer(sendData, history)
+    } else if (peDatesTill <= peDatesFrom) {
+      setAlert('You chose incorrect Dates', 'warning')
     } else {
       setAlert('You should have at least one Insurance Class', 'warning')
     }
@@ -208,17 +177,6 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
           </select>
         </div>
         <div className='form-group'>
-          <label>Policy Number</label>
-          <input
-            type='text'
-            className='form-control'
-            name='policyNumber'
-            value={policyNumber}
-            onChange={onChange}
-            required
-          />
-        </div>
-        <div className='form-group'>
           <label>Name of Company/Policyholder</label>
           <input
             type='text'
@@ -229,29 +187,31 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
             required
           />
         </div>
-        <div className='form-group'>
+        <div>
           <label>Policy Effective Dates</label>
-          <input
-            type='date'
-            className='form-control'
-            name='peDates'
-            value={peDates}
-            onChange={onChange}
-            required
-          />
-        </div>
-        <div className='form-group'>
-          <label>Policy Premium Minus Fully Earned Endorsements ($)</label>
-          <input
-            type='Number'
-            className='form-control'
-            name='ppmfeEndorsements'
-            value={ppmfeEndorsements}
-            onChange={onChange}
-            disabled={true}
-            style={{ cursor: 'not-allowed' }}
-            required
-          />
+          <div className='row'>
+            <div className='form-group col-sm-5 peDates'>
+              <input
+                type='date'
+                className='form-control'
+                name='peDatesFrom'
+                value={peDatesFrom}
+                onChange={onChange}
+                required
+              />
+            </div>
+            <div className='form-group col-sm-2 text-center'> ~ </div>
+            <div className='form-group col-sm-5 peDates'>
+              <input
+                type='date'
+                className='form-control'
+                name='peDatesTill'
+                value={peDatesTill}
+                onChange={onChange}
+                required
+              />
+            </div>
+          </div>
         </div>
         <div className='form-group'>
           <label>Policy Holder Email</label>

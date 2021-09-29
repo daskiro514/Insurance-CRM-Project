@@ -39,17 +39,18 @@ const UserSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'carrier'
   },
-  policyNumber: {
-    type: String
-  },
   companyName: {
     type: String
   },
-  peDates: {
+  peDatesFrom: {
     type: Date,
   },
-  ppmfeEndorsements: {
-    type: Number
+  peDatesTill: {
+    type: Date,
+  },
+  paidPremium: {
+    type: Number,
+    default: 0
   },
   gliClasses: [
     {

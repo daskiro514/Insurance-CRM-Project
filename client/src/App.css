@@ -121,10 +121,24 @@ img {
   min-width: 150px !important;
 }
 
+@media (min-width: 320px) {
+  .bg-admin .form .peDates {
+    -ms-flex: 0 0 47.9%;
+    flex: 0 0 47.9%;
+    max-width: 47.9%;
+  }
+  .bg-admin .form .col-sm-2 {
+    -ms-flex: 0 0 4%;
+    flex: 0 0 4%;
+    max-width: 4%;
+    padding: 0px;
+    padding-top: 5px;
+  }
+}
 
 /* CUSTOMER */
+
 .bg-admin .clientShow {
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
   height: 100%;
 }
-

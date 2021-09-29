@@ -74,7 +74,7 @@ router.post('/addCustomer', async (req, res) => {
 })
 
 router.get('/getCustomers', async (req, res) => {
-  const customers = await User.find({ type: 'customer' }).populate('classinsu')
+  const customers = await User.find({ type: 'customer' }).populate(['gliClasses', 'wciClasses'])
 
   res.json({
     success: true,
