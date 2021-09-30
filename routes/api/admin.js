@@ -16,7 +16,6 @@ const ClassInsu = require('../../models/ClassInsu')
 const mailgunApiKey = config.get('mailgun.mailgunApiKey')
 const mailgunDomain = config.get('mailgun.domain')
 var mailgun = require('mailgun-js')({ apiKey: mailgunApiKey, domain: mailgunDomain })
-console.log(mailgun)
 
 router.get('/getCarriers', async (req, res) => {
   const carriers = await Carrier.find()
@@ -154,7 +153,7 @@ router.post('/updateCustomer/:id', async (req, res) => {
 
 router.post('/sendAlertToCustomer', async (req, res) => {
   var emailContentToCustomer = {
-    from: 'Aquerate Alert',
+    from: 'Aquerate <info@aquerate.com>',
     to: req.body.customerEmail,
     subject: 'Test Alert For Premium Payment',
     text: `Hi. Your premium due date is ${req.body.dueDate.slice(0, 10)}. You should pay $${req.body.premium} soon.
