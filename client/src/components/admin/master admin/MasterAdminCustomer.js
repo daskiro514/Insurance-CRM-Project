@@ -1,12 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { getCustomer } from '../../../actions/admin'
+import { goPage, getCustomer, sendAlertToCustomer } from '../../../actions/admin'
 import MasterAdminHeader from './partials/MasterAdminHeader'
-import { goPage } from '../../../actions/admin'
 import { useHistory } from 'react-router-dom'
 import formatDate from '../../../utils/formatDate1'
 
-const MasterAdminCustomer = ({ match, getCustomer, customer, goPage }) => {
+const MasterAdminCustomer = ({ match, getCustomer, customer, goPage, sendAlertToCustomer }) => {
   let history = useHistory()
   const [gliClasses, setGliClasses] = React.useState([])
   const [wciClasses, setWciClasses] = React.useState([])
@@ -45,11 +44,19 @@ const MasterAdminCustomer = ({ match, getCustomer, customer, goPage }) => {
         <div className='border rounded-lg container py-3 px-4 clientShow'>
           <div className='d-flex align-items-center justify-content-between'>
             <h5>Policy Details</h5>
-            <button
-              className='btn btn-sm'
-              style={{ color: 'white', backgroundColor: '#000356' }}
-              onClick={() => goPage(history, `editCustomer/${customer._id}`)}
-            >Edit</button>
+            <div>
+              <button
+                className='btn btn-sm'
+                style={{ color: 'white', backgroundColor: '#000356' }}
+                onClick={() => goPage(history, `editCustomer/${customer._id}`)}
+              >Edit</button>&nbsp;
+              <button
+                className='btn btn-sm btn-info'
+                onClick={() => sendAlertToCustomer(customer.email, customer.peDatesTill, premium)}
+              >
+                Send Alert
+              </button>
+            </div>
           </div>
           <div className='row pt-2'>
             <div className='col-sm-6'>Policy Number</div>
@@ -231,4 +238,4 @@ const mapStateToProps = state => ({
   customer: state.admin.adminCustomer
 })
 
-export default connect(mapStateToProps, { getCustomer, goPage })(MasterAdminCustomer)
+export default connect(mapStateToProps, { getCustomer, goPage, sendAlertToCustomer })(MasterAdminCustomer)

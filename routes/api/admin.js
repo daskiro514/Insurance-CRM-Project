@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const config = require('config')
 
 // For User Generate
 const bcrypt = require('bcryptjs')
@@ -10,6 +11,11 @@ const gravatar = require('gravatar')
 const User = require('../../models/User')
 const Carrier = require('../../models/Carrier')
 const ClassInsu = require('../../models/ClassInsu')
+
+// Mailgun Info
+const mailgunApiKey = config.get('mailgun.mailgunApiKey')
+const mailgunDomain = config.get('mailgun.domain')
+var mailgun = require('mailgun-js')({ apiKey: mailgunApiKey, domain: mailgunDomain })
 
 router.get('/getCarriers', async (req, res) => {
   const carriers = await Carrier.find()
@@ -142,6 +148,24 @@ router.post('/updateCustomer/:id', async (req, res) => {
 
   res.json({
     success: true,
+  })
+})
+
+router.post('/sendAlertToCustomer', async (req, res) => {
+  var emailContentToCustomer = {
+    from: 'Aquerate',
+    to: req.body.customerEmail,
+    subject: 'Test Alert For Premium Payment',
+    text: `Hi. Your premium due date is ${req.body.dueDate.slice(0, 10)}. You should pay $${req.body.premium} soon.
+    Aquerate Team.`
+  }
+
+  mailgun.messages().send(emailContentToCustomer, function (error, body) {
+    console.log(body)
+  })
+
+  res.json({
+    success: true
   })
 })
 

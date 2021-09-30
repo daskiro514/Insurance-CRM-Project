@@ -89,3 +89,10 @@ export const updateCustomer = (formData, history, customerID) => async dispatch 
   }
 }
 
+export const sendAlertToCustomer = (customerEmail, dueDate, premium) => async dispatch => {
+  const response = await api.post('/admin/sendAlertToCustomer', {customerEmail, dueDate, premium})
+
+  if (response.data.success) {
+    dispatch(setAlert('Email Sent Successfully!', 'success'))
+  }
+}
