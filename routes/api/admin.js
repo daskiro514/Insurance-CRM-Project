@@ -16,6 +16,7 @@ const ClassInsu = require('../../models/ClassInsu')
 const mailgunApiKey = config.get('mailgun.mailgunApiKey')
 const mailgunDomain = config.get('mailgun.domain')
 var mailgun = require('mailgun-js')({ apiKey: mailgunApiKey, domain: mailgunDomain })
+console.log(mailgun)
 
 router.get('/getCarriers', async (req, res) => {
   const carriers = await Carrier.find()
