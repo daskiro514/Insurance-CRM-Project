@@ -153,7 +153,7 @@ router.post('/updateCustomer/:id', async (req, res) => {
 
 router.post('/sendAlertToCustomer', async (req, res) => {
   var emailContentToCustomer = {
-    from: 'Aquerate',
+    from: 'Aquerate <steven@hooley.me>',
     to: req.body.customerEmail,
     subject: 'Test Alert For Premium Payment',
     text: `Hi. Your premium due date is ${req.body.dueDate.slice(0, 10)}. You should pay $${req.body.premium} soon.
