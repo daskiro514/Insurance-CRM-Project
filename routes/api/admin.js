@@ -17,7 +17,7 @@ const mailgunApiKey = config.get('mailgun.mailgunApiKey')
 const mailgunDomain = config.get('mailgun.domain')
 var mailgun = require('mailgun-js')({ apiKey: mailgunApiKey, domain: mailgunDomain })
 
-const { policyPremium, monthlyPremium } = require('../../utils/premium-calculate')
+const { totalPremium, policyPremium, monthlyPremium, monthlyDueDate } = require('../../utils/premium-calculate')
 
 router.get('/getCarriers', async (req, res) => {
   const carriers = await Carrier.find()
@@ -107,8 +107,10 @@ router.post('/updateCustomerPriority/:id', async (req, res) => {
 router.get('/getCustomer/:id', async (req, res) => {
   var customerFromDB = await User.findById(req.params.id).populate(['gliClasses', 'wciClasses'])
   var customer = {...customerFromDB._doc}
+  customer.totalPremium = totalPremium(customer)
   customer.policyPremium = policyPremium(customer)
   customer.monthlyPremium = monthlyPremium(customer)
+  customer.monthlyDueDate = monthlyDueDate(customer)
 
   res.json({
     success: true,

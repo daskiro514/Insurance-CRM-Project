@@ -69,7 +69,7 @@ export const updateCustomerPriority = (customerID, priority) => async dispatch =
   }
 }
 
-export const getCustomer = (customerID) => async dispatch => {
+export const getCustomer = customerID => async dispatch => {
   const response = await api.get(`/admin/getCustomer/${customerID}`)
 
   if (response.data.success) {

@@ -3,33 +3,24 @@ import { connect } from 'react-redux'
 import { goPage } from '../../actions/admin'
 import { useHistory } from 'react-router'
 import CustomerAdminHeader from './partials/CustomerAdminHeader'
-import { formatDate } from '../../utils/formatDate1'
+import { formatDate, formatDueDate } from '../../utils/formatDate1'
+import { getCustomer } from '../../actions/customer'
 
-const CustomerDashboard = ({ user, goPage }) => {
+const CustomerDashboard = ({ user, customer, goPage, getCustomer }) => {
   let history = useHistory()
   const [gliClasses, setGliClasses] = React.useState([])
   const [wciClasses, setWciClasses] = React.useState([])
-  const [premium, setPremium] = React.useState(0)
 
   React.useEffect(() => {
-    setGliClasses(user.gliClasses)
-    setWciClasses(user.wciClasses)
+    getCustomer(user._id)
+  }, [getCustomer, user])
 
-    // PREMIUM CALCULATE
-    var totalPremium = 0
-    user.gliClasses.forEach(element => {
-      if (element.type === 'Sales') {
-        totalPremium += (element.amount / 9 * 12 / 100 * element.rate)
-      } else {
-        totalPremium += (element.amount / 9 * 12 / 1000 * element.rate)
-      }
-    })
-    user.wciClasses.forEach(element => {
-      totalPremium += (element.amount / 9 * 12 / 1000 * element.rate)
-    })
-
-    setPremium((totalPremium - user.paidPremium).toFixed(2))
-  }, [user])
+  React.useEffect(() => {
+    if (customer._id) {
+      setGliClasses(customer.gliClasses)
+      setWciClasses(customer.wciClasses)
+    }
+  }, [customer])
 
   return (
     <div className='m-2'>
@@ -45,27 +36,50 @@ const CustomerDashboard = ({ user, goPage }) => {
         </div>
         <div className='row pt-2'>
           <div className='col-sm-6'>Policy Number</div>
-          <div className='col-sm-6 pl-4'>{user._id}</div>
+          <div className='col-sm-6 pl-4'>{customer._id}</div>
         </div>
         <div className='row'>
           <div className='col-sm-6'>Policy Effective Dates</div>
-          <div className='col-sm-6 pl-4'>{formatDate(user.peDatesFrom)} ~ {formatDate(user.peDatesTill)}</div>
+          <div className='col-sm-6 pl-4'>{formatDate(customer.peDatesFrom)} ~ {formatDate(customer.peDatesTill)}</div>
         </div>
         <div className='row'>
           <div className='col-sm-6'>Premium Due Date</div>
-          <div className='col-sm-6 pl-4'>{formatDate(user.peDatesTill)}</div>
+          <div className='col-sm-6 pl-4'>{formatDueDate(customer.peDatesTill)}</div>
         </div>
         <div className='row'>
-          <div className='col-sm-6'>Policy Premium</div>
-          <div className='col-sm-6 pl-4'><span className={'badge ' + (premium < 0 ? 'badge-primary ' : 'badge-danger')}>$ {premium}</span></div>
+          <div className='col-sm-6'>Total Premium</div>
+          <div className='col-sm-6 pl-4'>$ {customer.totalPremium}</div>
         </div>
+        <div className='row'>
+          <div className='col-sm-6'>Paid Premium</div>
+          <div className='col-sm-6 pl-4'>$ {customer.paidPremium}</div>
+        </div>
+        <div className='row pt-2'>
+          <div className='col-sm-6'>Policy Premium</div>
+          <div className='col-sm-6 pl-4'><span className={'badge ' + (customer.policyPremium <= 0 ? 'badge-primary ' : 'badge-danger')}>$ {customer.policyPremium}</span></div>
+        </div>
+        {formatDueDate(customer.monthlyDueDate) === 'Expired'
+          ?
+          null
+          :
+          <>
+            <div className='row pt-2'>
+              <div className='col-sm-6'>Monthly Due Date</div>
+              <div className='col-sm-6 pl-4'>{formatDueDate(customer.monthlyDueDate)}</div>
+            </div>
+            <div className='row'>
+              <div className='col-sm-6'>Monthly Premium</div>
+              <div className='col-sm-6 pl-4'><span className={'badge ' + (customer.monthlyPremium <= 0 ? 'badge-primary ' : 'badge-success')}>$ {customer.monthlyPremium}</span></div>
+            </div>
+          </>
+        }
         <div className='row pt-3'>
           <div className='col-sm-6'>Company/Policyholder</div>
-          <div className='col-sm-6 pl-4'>{user.companyName}</div>
+          <div className='col-sm-6 pl-4'>{customer.companyName}</div>
         </div>
         <div className='row'>
           <div className='col-sm-6'>Policy Holder Email</div>
-          <div className='col-sm-6 pl-4'>{user.email}</div>
+          <div className='col-sm-6 pl-4'>{customer.email}</div>
         </div>
 
         <div className='table-responsive mt-4'>
@@ -220,6 +234,7 @@ const CustomerDashboard = ({ user, goPage }) => {
 
 const mapStateToProps = state => ({
   user: state.auth.user,
+  customer: state.customer.customer,
 })
 
-export default connect(mapStateToProps, { goPage })(CustomerDashboard)
+export default connect(mapStateToProps, { goPage, getCustomer })(CustomerDashboard)

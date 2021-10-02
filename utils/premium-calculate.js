@@ -11,18 +11,33 @@ const totalPremium = customer => {
     totalPremium += (element.amount / 9 * 12 / 1000 * element.rate)
   })
 
-  return totalPremium
+  return totalPremium.toFixed(2)
 }
 
 const policyPremium = customer => {
   return ((totalPremium(customer) - customer.paidPremium).toFixed(2))
 }
 
+const monthlyDueDate = customer => {
+  var today = new Date()
+  var nextDueMiliSec = (customer.peDatesTill - today) % 2628000000
+  return new Date(today.getTime() + nextDueMiliSec)
+}
+
 const monthlyPremium = customer => {
-  console.log(customer.peDatesFrom)
+  var today = new Date()
+  if (today > customer.peDatesTill) {
+    return policyPremium(customer)
+  }
+
+  monthAmountLeft = Math.ceil((customer.peDatesTill - today) / 2628000000)
+
+  return (policyPremium(customer) / monthAmountLeft).toFixed(2)
 }
 
 module.exports = {
+  totalPremium,
   policyPremium,
+  monthlyDueDate,
   monthlyPremium
 }
