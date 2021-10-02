@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { goPage } from '../../actions/admin'
 import { useHistory } from 'react-router'
 import CustomerAdminHeader from './partials/CustomerAdminHeader'
-import formatDate from '../../utils/formatDate1'
+import { formatDate } from '../../utils/formatDate1'
 
 const CustomerDashboard = ({ user, goPage }) => {
   let history = useHistory()
@@ -213,81 +213,6 @@ const CustomerDashboard = ({ user, goPage }) => {
             </div>
           </div>
         </div>
-        {/* <div className='col-md-6'>
-          <div className='border rounded-lg container py-3 px-4 clientShow'>
-            <h5>Payment Portal</h5>
-            <div className='row pb-2'>
-              <div className='col-sm-4 pt-1'>
-                Amount To Pay
-              </div>
-              <div className='col-sm-8'>
-                <select
-                  className='form-control bg-light'
-                  name='carrier'
-                >
-                  <option value=''>monthly premium</option>
-                </select>
-              </div>
-            </div>
-            <div className='row pb-2'>
-              <div className='col-sm-4 pt-1'>
-                Payment Method
-              </div>
-              <div className='col-sm-8'>
-                <select
-                  className='form-control bg-light'
-                  name='carrier'
-                >
-                  <option value=''>card ending in *6541</option>
-                </select>
-              </div>
-            </div>
-            <div className='row pb-2'>
-              <div className='col-sm-4 pt-1'>
-                Card Number
-              </div>
-              <div className='col-sm-8'>
-                <input
-                  type='text'
-                  className='form-control bg-light'
-                  name='policyNumber'
-                />
-              </div>
-            </div>
-            <div className='row pb-2'>
-              <div className='col-sm-4 pt-1'>
-                CVC
-              </div>
-              <div className='col-sm-8'>
-                <input
-                  type='text'
-                  className='form-control bg-light'
-                  name='policyNumber'
-                />
-              </div>
-            </div>
-            <div className='row pb-4'>
-              <div className='col-sm-4 pt-1'>
-                Expiration Date
-              </div>
-              <div className='col-sm-8'>
-                <input
-                  type='text'
-                  className='form-control bg-light'
-                  name='policyNumber'
-                />
-              </div>
-            </div>
-            <div className='d-flex justify-content-center'>
-              <button
-                className='btn border rounded-lg'
-                style={{ backgroundColor: '#000356', color: 'white' }}
-              >
-                <i className="material-icons" style={{ fontSize: '16px' }}>&#xe870;</i> Submit Payment of $ {premium}
-              </button>
-            </div>
-          </div>
-        </div> */}
       </div>
     </div>
   )

@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import CustomerAdminHeader from './partials/CustomerAdminHeader'
-import formatDate from '../../utils/formatDate1'
+import { formatDate } from '../../utils/formatDate1'
 
 const CustomerPayment = ({ user }) => {
   const [premium, setPremium] = React.useState(0)

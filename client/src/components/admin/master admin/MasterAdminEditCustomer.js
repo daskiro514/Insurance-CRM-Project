@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { getCustomer, updateCustomer } from '../../../actions/admin'
 import { setAlert } from '../../../actions/alert'
-import formatDate from '../../../utils/formatDate1'
+import { formatDate } from '../../../utils/formatDate1'
 import MasterAdminHeader from './partials/MasterAdminHeader'
 
 const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updateCustomer }) => {

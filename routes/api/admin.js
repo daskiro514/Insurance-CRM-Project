@@ -17,6 +17,8 @@ const mailgunApiKey = config.get('mailgun.mailgunApiKey')
 const mailgunDomain = config.get('mailgun.domain')
 var mailgun = require('mailgun-js')({ apiKey: mailgunApiKey, domain: mailgunDomain })
 
+const { policyPremium, monthlyPremium } = require('../../utils/premium-calculate')
+
 router.get('/getCarriers', async (req, res) => {
   const carriers = await Carrier.find()
 
@@ -80,7 +82,13 @@ router.post('/addCustomer', async (req, res) => {
 })
 
 router.get('/getCustomers', async (req, res) => {
-  const customers = await User.find({ type: 'customer' }).populate(['gliClasses', 'wciClasses'])
+  const customersFromDB = await User.find({ type: 'customer' }).populate(['gliClasses', 'wciClasses'])
+  var customers = []
+  customersFromDB.forEach(customerFromDB => {
+    var customer = {...customerFromDB._doc}
+    customer.policyPremium = policyPremium(customer)
+    customers.push(customer)
+  })
 
   res.json({
     success: true,
@@ -97,7 +105,10 @@ router.post('/updateCustomerPriority/:id', async (req, res) => {
 })
 
 router.get('/getCustomer/:id', async (req, res) => {
-  const customer = await User.findById(req.params.id).populate(['gliClasses', 'wciClasses'])
+  var customerFromDB = await User.findById(req.params.id).populate(['gliClasses', 'wciClasses'])
+  var customer = {...customerFromDB._doc}
+  customer.policyPremium = policyPremium(customer)
+  customer.monthlyPremium = monthlyPremium(customer)
 
   res.json({
     success: true,
