@@ -23,7 +23,7 @@ const MasterAdminCustomers = ({ goPage, getCustomers, customers }) => {
               <th>Policy Number</th>
               <th>Company/Policyholder</th>
               <th>Policy Premium</th>
-              <th>Next Due Date</th>
+              <th>Premium Due Date</th>
               <th>Priority</th>
             </tr>
           </thead>

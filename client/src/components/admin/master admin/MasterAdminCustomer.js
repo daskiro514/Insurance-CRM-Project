@@ -66,14 +66,21 @@ const MasterAdminCustomer = ({ match, getCustomer, customer, goPage, sendAlertTo
             <div className='col-sm-6'>Policy Premium</div>
             <div className='col-sm-6 pl-4'><span className={'badge ' + (customer.policyPremium <= 0 ? 'badge-primary ' : 'badge-danger')}>$ {customer.policyPremium}</span></div>
           </div>
-          <div className='row pt-2'>
-            <div className='col-sm-6'>Monthly Due Date</div>
-            <div className='col-sm-6 pl-4'>{formatDate(customer.monthlyDueDate)}</div>
-          </div>
-          <div className='row'>
-            <div className='col-sm-6'>Monthly Premium</div>
-            <div className='col-sm-6 pl-4'><span className={'badge ' + (customer.monthlyPremium <= 0 ? 'badge-primary ' : 'badge-success')}>$ {customer.monthlyPremium}</span></div>
-          </div>
+          {formatDueDate(customer.monthlyDueDate) === 'Expired'
+            ?
+            null
+            :
+            <>
+              <div className='row pt-2'>
+                <div className='col-sm-6'>Monthly Due Date</div>
+                <div className='col-sm-6 pl-4'>{formatDueDate(customer.monthlyDueDate)}</div>
+              </div>
+              <div className='row'>
+                <div className='col-sm-6'>Monthly Premium</div>
+                <div className='col-sm-6 pl-4'><span className={'badge ' + (customer.monthlyPremium <= 0 ? 'badge-primary ' : 'badge-success')}>$ {customer.monthlyPremium}</span></div>
+              </div>
+            </>
+          }
           <div className='row pt-3'>
             <div className='col-sm-6'>Company/Policyholder</div>
             <div className='col-sm-6 pl-4'>{customer.companyName}</div>
