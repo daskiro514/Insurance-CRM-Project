@@ -75,6 +75,19 @@ const Landing = () => {
               <Link to='' className='link-contact-info p-2 px-5'>Contact Info:</Link>
             </div>
           </div>
+          <div className='row py-5 d-flex align-items-center text-contact-info' style={{ color: 'white' }}>
+            <div className='col-md-5 text-center'>
+              <h1><i>555-555-555</i></h1>
+              <h3><i>Straight Line</i></h3>
+              <h1><i>555-555-555</i></h1>
+              <h3><i>Customer Support</i></h3>
+            </div>
+            <div className='col-md-7 text-center'>
+              <div className='py-4'>
+                <h1><i><u>crmisurance@email.com</u></i></h1>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
