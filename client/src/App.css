@@ -26,6 +26,31 @@ img {
   min-height: 100vh;
 }
 
+.bg-landing .logo {
+  cursor: pointer;
+}
+
+@media (min-width: 769px) {
+  .top-logo {
+    display: none;
+  }
+  .bg-landing .logo {
+    display: block;
+  }
+}
+
+@media (max-width: 768px) {
+  .top-logo {
+    width: 70vw;
+    margin-top: 50px !important;
+    margin-bottom: 30px !important;
+    display: block;
+  }
+  .bg-landing .logo {
+    display: none;
+  }
+}
+
 .bg-landing a {
   text-decoration: none;
   color: black;
@@ -40,6 +65,26 @@ img {
 @media (max-width: 768px) {
   .bg-landing .text-specialize {
     font-size: 20px;
+  }
+}
+
+.bg-landing .link-contact-info {
+  background-color: #eee;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .bg-landing .text-review {
+    margin: 0px !important;
+  }
+  .bg-landing .text-review .text-review-inner-text {
+    margin: 20px !important;
+    text-align: justify;
+    font-size: 11px;
+  }
+  .bg-landing .text-review .fa {
+    padding: 15px !important;
+    padding-top: 30px !important;
   }
 }
 
