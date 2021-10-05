@@ -102,12 +102,14 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
 
   const onSubmit = e => {
     e.preventDefault()
-    if (gliClasses.length > 0 && wciClasses.length > 0) {
-      let sendData = { policyNumber, companyName, peDatesFrom, peDatesTill, email, gliClasses, wciClasses }
-      updateCustomer(sendData, history, customer._id)
-    } else {
-      setAlert('You should have at least one Insurance Class', 'warning')
-    }
+    let sendData = { policyNumber, companyName, peDatesFrom, peDatesTill, email, gliClasses, wciClasses }
+    updateCustomer(sendData, history, customer._id)
+    // if (gliClasses.length > 0 && wciClasses.length > 0) {
+    //   let sendData = { policyNumber, companyName, peDatesFrom, peDatesTill, email, gliClasses, wciClasses }
+    //   updateCustomer(sendData, history, customer._id)
+    // } else {
+    //   setAlert('You should have at least one Insurance Class', 'warning')
+    // }
   }
 
   return (

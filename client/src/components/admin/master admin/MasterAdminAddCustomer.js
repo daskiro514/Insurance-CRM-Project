@@ -98,16 +98,24 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
 
   const onSubmit = e => {
     e.preventDefault()
-    if (gliClasses.length > 0 && wciClasses.length > 0 && peDatesTill > peDatesFrom) {
+    if (peDatesTill > peDatesFrom) {
       let sendData = { ...formData }
       sendData.gliClasses = gliClasses
       sendData.wciClasses = wciClasses
       addCustomer(sendData, history)
     } else if (peDatesTill <= peDatesFrom) {
       setAlert('You chose incorrect Dates', 'warning')
-    } else {
-      setAlert('You should have at least one Insurance Class', 'warning')
     }
+    // if (gliClasses.length > 0 && wciClasses.length > 0 && peDatesTill > peDatesFrom) {
+    //   let sendData = { ...formData }
+    //   sendData.gliClasses = gliClasses
+    //   sendData.wciClasses = wciClasses
+    //   addCustomer(sendData, history)
+    // } else if (peDatesTill <= peDatesFrom) {
+    //   setAlert('You chose incorrect Dates', 'warning')
+    // } else {
+    //   setAlert('You should have at least one Insurance Class', 'warning')
+    // }
   }
 
   return (

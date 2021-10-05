@@ -99,6 +99,7 @@ const MasterAdminCustomer = ({ match, getCustomer, customer, goPage, sendAlertTo
                   <th>Amount ($)</th>
                   <th>Rate (%)</th>
                   <th>Type</th>
+                  <th>Subtotal</th>
                 </tr>
               </thead>
               <tbody>
@@ -109,6 +110,7 @@ const MasterAdminCustomer = ({ match, getCustomer, customer, goPage, sendAlertTo
                     <td>{item.amount}</td>
                     <td>{item.rate}</td>
                     <td>{item.type}</td>
+                    <td>{(item.amount * (item.type === 'Sales' ? item.rate / 100 : item.rate / 1000) * 12 / 9).toFixed(2)}</td>
                   </tr>
                 )}
               </tbody>
@@ -124,6 +126,7 @@ const MasterAdminCustomer = ({ match, getCustomer, customer, goPage, sendAlertTo
                   <th>Amount ($)</th>
                   <th>Rate (%)</th>
                   <th>Type</th>
+                  <th>Subtotal</th>
                 </tr>
               </thead>
               <tbody>
@@ -134,6 +137,7 @@ const MasterAdminCustomer = ({ match, getCustomer, customer, goPage, sendAlertTo
                     <td>{item.amount}</td>
                     <td>{item.rate}</td>
                     <td>{item.type}</td>
+                    <td>{(item.amount * item.rate / 1000 * 12 / 9).toFixed(2)}</td>
                   </tr>
                 )}
               </tbody>

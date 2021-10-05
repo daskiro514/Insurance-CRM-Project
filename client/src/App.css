@@ -156,6 +156,14 @@ img {
   outline: none;
 }
 
+.bg-admin .adminHeader .dropdown-toggle::after {
+  display: none;
+}
+
+.bg-admin .adminHeader .dropdown-item {
+  margin-bottom: 0px;
+}
+
 .bg-admin .customerTable {
   border: 1px solid #dee2e6;
   margin-bottom: 150px;
