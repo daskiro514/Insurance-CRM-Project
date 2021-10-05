@@ -1,5 +1,4 @@
 import React from 'react'
-import Logo from '../../img/landing/logo.png'
 import TextLogo from '../../img/landing/text-logo.png'
 import Broker from '../../img/landing/image-broker.png'
 import Provider from '../../img/landing/image-providers.png'
@@ -10,28 +9,20 @@ const Landing = () => {
 
   return (
     <div>
-      <div className='top-logo text-center m-auto'>
-        <img src={Logo} alt='LOGO' className='img-fluid' />
-      </div>
       <div className='bg-landing'>
         <div className='container'>
-          <div className='row p-3 d-flex flex-row-reverse'>
+          <div className='row p-3 d-flex flex-row-reverse topNavBar'>
             <Link to=''>What Are We?</Link>
             <Link to='/login'>Login</Link>
           </div>
           <div className='row py-5 d-flex flex-row-reverse align-items-center'>
-            <div className='col-md-5'>
-              <div className='logo text-center m-auto'>
-                <img src={Logo} alt='LOGO' className='img-fluid' />
-              </div>
-            </div>
-            <div className='col-md-7'>
+            <div className='col-md-12'>
               <img src={TextLogo} alt='TEXTLOGO' className='img-fluid' />
             </div>
           </div>
-          <div className='row py-2 pt-5'>
+          <div className='row py-2 pt-5 px-4'>
             <div className='text-center text-white w-100 text-specialize'>
-              Here in <strong>CRM</strong> we specialize in:
+              Here at <strong>Aquerate</strong> we specialize in:
             </div>
           </div>
           <div className='row py-5'>
@@ -70,18 +61,51 @@ const Landing = () => {
               <Link to='' className='link-contact-info p-2 px-5'>Contact Info:</Link>
             </div>
           </div>
-          <div className='row py-5 d-flex align-items-center text-contact-info' style={{ color: 'white' }}>
-            <div className='col-md-5 text-center'>
-              <h1><i>555-555-555</i></h1>
-              <h3><i>Straight Line</i></h3>
-              <h1><i>555-555-555</i></h1>
-              <h3><i>Customer Support</i></h3>
+          <div className='row p-3 pb-5' style={{ color: 'white' }}>
+            <div className='col-md-3'></div>
+            <div className='col-md-6'>
+              <form className='form'>
+                <div className='form-group '>
+                  <label>Name</label>
+                  <input
+                    type='text'
+                    className='form-control'
+                    required
+                  />
+                </div>
+                <div className='form-group '>
+                  <label>Email</label>
+                  <input
+                    type='text'
+                    className='form-control'
+                    required
+                  />
+                </div>
+                <div className='form-group '>
+                  <label>Phone Number</label>
+                  <input
+                    type='text'
+                    className='form-control'
+                    required
+                  />
+                </div>
+                <div className='form-group '>
+                  <label>Message...</label>
+                  <textarea
+                    type='text'
+                    rows={5}
+                    className='form-control'
+                    required
+                  />
+                </div>
+                <div className='form-group'>
+                  <button type='submit' className='form-control btn-secondary'>
+                    SUBMIT
+                  </button>
+                </div>
+              </form>
             </div>
-            <div className='col-md-7 text-center'>
-              <div className='py-4'>
-                <h1><i><u>crmisurance@email.com</u></i></h1>
-              </div>
-            </div>
+            <div className='col-md-3'></div>
           </div>
         </div>
       </div>

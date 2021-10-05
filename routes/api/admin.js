@@ -206,7 +206,7 @@ ruleForEmail.second = 0
 
 const scheduleForSendEmail = schedule.scheduleJob(ruleForEmail, async () => {
   const users = await User.find({type: 'customer'})
-  console.log(users)
+  // console.log(users)
 })
 
 module.exports = router
