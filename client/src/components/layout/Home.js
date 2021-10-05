@@ -1,8 +1,8 @@
 import React from 'react'
-import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import MasterAdmin from '../admin/master admin/MasterAdmin'
 import CustomerHome from '../customer/CustomerHome'
+import Landing from './Landing'
 
 const Home = ({ isAuthenticated, user }) => {
   if (isAuthenticated && user && user.type === "admin") {
@@ -14,7 +14,9 @@ const Home = ({ isAuthenticated, user }) => {
       <CustomerHome />
     )
   } else {
-    return <Redirect to={"/login"} />
+    return (
+      <Landing />
+    )
   }
 }
 
