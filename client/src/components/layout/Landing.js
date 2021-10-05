@@ -51,11 +51,6 @@ const Landing = () => {
               </div>
             </div>
           </div>
-          <div className='row px-5'>
-            <div className='text-center text-white w-100'>
-              <p>Managing customers by providing insurance help.</p>
-            </div>
-          </div>
           <div className='row py-5'>
             <div className='text-center text-white w-100'>
               <h1><strong>Customer</strong> Reviews:</h1>
