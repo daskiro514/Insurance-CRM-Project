@@ -12,6 +12,9 @@ const User = require('../../models/User')
 const Carrier = require('../../models/Carrier')
 const ClassInsu = require('../../models/ClassInsu')
 
+// Schedule
+const schedule = require('node-schedule')
+
 // Mailgun Info
 const mailgunApiKey = config.get('mailgun.mailgunApiKey')
 const mailgunDomain = config.get('mailgun.domain')
@@ -180,6 +183,30 @@ router.post('/sendAlertToCustomer', async (req, res) => {
   res.json({
     success: true
   })
+})
+
+const sendEmailToCustomer = customer => {
+  var emailContentToCustomer = {
+    from: 'Aquerate <info@aquerate.com>',
+    to: customer.email,
+    subject: 'Urgent: Update Your Financials',
+    text: `As a part of Aquerates mission to service you, and give you accurate quotes, it’s essential you update your financials in the dashboard. Please login and do so now. https://aquerate.com`
+  }
+
+  console.log(emailContentToCustomer)
+
+  // mailgun.messages().send(emailContentToCustomer, function (error, body) {
+  //   console.log(body)
+  // })
+}
+
+const ruleForEmail = new schedule.RecurrenceRule()
+// ruleForEmail.hour = 0
+ruleForEmail.second = 0
+
+const scheduleForSendEmail = schedule.scheduleJob(ruleForEmail, async () => {
+  const users = await User.find({type: 'customer'})
+  console.log(users)
 })
 
 module.exports = router
