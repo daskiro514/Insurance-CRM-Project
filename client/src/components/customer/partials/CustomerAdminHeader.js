@@ -1,9 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { logout } from '../../../actions/auth'
 import alarm from '../../../img/admin/alarm.svg'
 import userAvatar from '../../../img/admin/userAvatar.png'
 
-const CustomerAdminHeader = ({ user }) => {
+const CustomerAdminHeader = ({ user, logout }) => {
 
   return (
     <div className='row adminHeader d-flex align-items-center mb-3 mt-3'>
@@ -12,10 +13,17 @@ const CustomerAdminHeader = ({ user }) => {
         <p className='mb-0'>180 Jackson Street NE Tampa Florida 32285</p>
       </div>
       <div className='col-md-6 d-flex flex-row-reverse align-items-center'>
+        <div className='dropdown'>
+          <button type='button' className='btn dropdown-toggle' data-toggle='dropdown'>
+            <span className='mr-2'>{user.name}</span>
+            <img src={user.avatar ? user.avatar : userAvatar} alt='AVATAR' className='rounded-circle' width='35px' />
+          </button>
+          <div className="dropdown-menu">
+            <p className="dropdown-item" onClick={logout}>&#8601; Sign Out</p>
+          </div>
+        </div>
         <div>
           <img src={alarm} alt='ALARM' width='22px' className='mr-2' />
-          <span className='mr-2'>{user.name}</span>
-          <img src={user.avatar ? user.avatar : userAvatar} alt='AVATAR' className='rounded-circle' width='35px' />
         </div>
       </div>
     </div>
@@ -26,4 +34,4 @@ const mapStateToProps = state => ({
   user: state.auth.user
 })
 
-export default connect(mapStateToProps, {})(CustomerAdminHeader)
+export default connect(mapStateToProps, { logout })(CustomerAdminHeader)

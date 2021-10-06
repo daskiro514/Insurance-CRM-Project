@@ -16,7 +16,7 @@ const MasterAdminHeader = ({ user, logout }) => {
             <img src={user.avatar ? user.avatar : userAvatar} alt='AVATAR' className='rounded-circle' width='35px' />
           </button>
           <div className="dropdown-menu">
-            <p className="dropdown-item">&#8601; Sign Out</p>
+            <p className="dropdown-item" onClick={logout}>&#8601; Sign Out</p>
           </div>
         </div>
         <div>

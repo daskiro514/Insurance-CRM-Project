@@ -13,6 +13,7 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
   const [companyName, setCompanyName] = React.useState('')
   const [peDatesFrom, setPeDatesFrom] = React.useState('2020-01-01')
   const [peDatesTill, setPeDatesTill] = React.useState('2020-01-01')
+  const [paidPremium, setPaidPremium] = React.useState(0)
   const [email, setEmail] = React.useState('')
 
   const [gliClasses, setGliClasses] = React.useState([])
@@ -28,6 +29,7 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
       setCompanyName(customer.companyName)
       setPeDatesFrom(formatDate(customer.peDatesFrom))
       setPeDatesTill(formatDate(customer.peDatesTill))
+      setPaidPremium(customer.paidPremium)
       setEmail(customer.email)
       setGliClasses(customer.gliClasses)
       setWciClasses(customer.wciClasses)
@@ -102,7 +104,7 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
 
   const onSubmit = e => {
     e.preventDefault()
-    let sendData = { policyNumber, companyName, peDatesFrom, peDatesTill, email, gliClasses, wciClasses }
+    let sendData = { policyNumber, companyName, peDatesFrom, peDatesTill, paidPremium, email, gliClasses, wciClasses }
     updateCustomer(sendData, history, customer._id)
     // if (gliClasses.length > 0 && wciClasses.length > 0) {
     //   let sendData = { policyNumber, companyName, peDatesFrom, peDatesTill, email, gliClasses, wciClasses }
@@ -178,6 +180,17 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
               name='email'
               value={email}
               onChange={e => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className='form-group'>
+            <label>Paid Premium</label>
+            <input
+              type='number'
+              className='form-control'
+              name='paidPremium'
+              value={paidPremium}
+              onChange={e => setPaidPremium(e.target.value)}
               required
             />
           </div>

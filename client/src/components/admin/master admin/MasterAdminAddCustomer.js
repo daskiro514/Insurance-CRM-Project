@@ -17,10 +17,11 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
     companyName: '',
     peDatesFrom: '',
     peDatesTill: '',
+    paidAmount: 0,
     email: '',
   })
 
-  const { name, username, password, password2, carrier, companyName, peDatesFrom, peDatesTill, email } = formData
+  const { name, username, password, password2, carrier, companyName, peDatesFrom, peDatesTill, paidAmount, email } = formData
 
   const onChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -106,16 +107,6 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
     } else if (peDatesTill <= peDatesFrom) {
       setAlert('You chose incorrect Dates', 'warning')
     }
-    // if (gliClasses.length > 0 && wciClasses.length > 0 && peDatesTill > peDatesFrom) {
-    //   let sendData = { ...formData }
-    //   sendData.gliClasses = gliClasses
-    //   sendData.wciClasses = wciClasses
-    //   addCustomer(sendData, history)
-    // } else if (peDatesTill <= peDatesFrom) {
-    //   setAlert('You chose incorrect Dates', 'warning')
-    // } else {
-    //   setAlert('You should have at least one Insurance Class', 'warning')
-    // }
   }
 
   return (
@@ -220,6 +211,17 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
               />
             </div>
           </div>
+        </div>
+        <div className='form-group'>
+          <label>Paid Amount</label>
+          <input
+            type='number'
+            className='form-control'
+            name='paidAmount'
+            value={paidAmount}
+            onChange={onChange}
+            required
+          />
         </div>
         <div className='form-group'>
           <label>Policy Holder Email</label>
