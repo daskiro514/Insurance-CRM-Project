@@ -88,7 +88,7 @@ router.get('/getCustomers', async (req, res) => {
   const customersFromDB = await User.find({ type: 'customer' }).populate(['gliClasses', 'wciClasses'])
   var customers = []
   customersFromDB.forEach(customerFromDB => {
-    var customer = {...customerFromDB._doc}
+    var customer = { ...customerFromDB._doc }
     customer.policyPremium = policyPremium(customer)
     customers.push(customer)
   })
@@ -109,7 +109,7 @@ router.post('/updateCustomerPriority/:id', async (req, res) => {
 
 router.get('/getCustomer/:id', async (req, res) => {
   var customerFromDB = await User.findById(req.params.id).populate(['gliClasses', 'wciClasses'])
-  var customer = {...customerFromDB._doc}
+  var customer = { ...customerFromDB._doc }
   customer.totalPremium = totalPremium(customer)
   customer.policyPremium = policyPremium(customer)
   customer.monthlyPremium = monthlyPremium(customer)
@@ -193,20 +193,32 @@ const sendEmailToCustomer = customer => {
     text: `As a part of Aquerates mission to service you, and give you accurate quotes, it’s essential you update your financials in the dashboard. Please login and do so now. https://aquerate.com`
   }
 
-  console.log(emailContentToCustomer)
-
-  // mailgun.messages().send(emailContentToCustomer, function (error, body) {
-  //   console.log(body)
-  // })
+  mailgun.messages().send(emailContentToCustomer, function (error, body) {
+    console.log(body)
+  })
 }
 
 const ruleForEmail = new schedule.RecurrenceRule()
-// ruleForEmail.hour = 0
-ruleForEmail.second = 0
+ruleForEmail.hour = 0
 
 const scheduleForSendEmail = schedule.scheduleJob(ruleForEmail, async () => {
-  const users = await User.find({type: 'customer'})
-  // console.log(users)
+  var newDate = new Date()
+  var year = newDate.getFullYear()
+  var month = newDate.getMonth() + 1
+  var date = newDate.getDate()
+
+  const users = await User.find({ type: 'customer' })
+  for (var i = 0; i < users.length; i++) {
+    var user = users[i]._doc
+    var targetTime = new Date(user.peDatesFrom.getTime() + 7776000000)
+    var targetYear = targetTime.getFullYear()
+    var targetMonth = targetTime.getMonth() + 1
+    var targetDate = targetTime.getDate()
+
+    if (targetYear === year && targetMonth === month && targetDate === date) {
+      sendEmailToCustomer(user)
+    }
+  }
 })
 
 module.exports = router
