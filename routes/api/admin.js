@@ -199,7 +199,7 @@ const sendEmailToCustomer = customer => {
 }
 
 const ruleForEmail = new schedule.RecurrenceRule()
-ruleForEmail.second = 0
+ruleForEmail.hour = 0
 
 const scheduleForSendEmail = schedule.scheduleJob(ruleForEmail, async () => {
   var newDate = new Date()
