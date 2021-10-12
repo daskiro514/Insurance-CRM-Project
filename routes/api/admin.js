@@ -171,27 +171,38 @@ const sendEmailToCustomer = customer => {
   })
 }
 
-// const ruleForEmail = new schedule.RecurrenceRule()
-// ruleForEmail.hour = 0
+const ruleForEmail = new schedule.RecurrenceRule()
+ruleForEmail.hour = 0
 
-// const scheduleForSendEmail = schedule.scheduleJob(ruleForEmail, async () => {
-//   var newDate = new Date()
-//   var year = newDate.getFullYear()
-//   var month = newDate.getMonth() + 1
-//   var date = newDate.getDate()
+const scheduleForSendEmail = schedule.scheduleJob(ruleForEmail, async () => {
+  var newDate = new Date()
+  var year = newDate.getFullYear()
+  var month = newDate.getMonth() + 1
+  var date = newDate.getDate()
 
-//   const users = await User.find({ type: 'customer' })
-//   for (var i = 0; i < users.length; i++) {
-//     var user = users[i]._doc
-//     var targetTime = new Date(user.peDatesFrom.getTime() + 7776000000)
-//     var targetYear = targetTime.getFullYear()
-//     var targetMonth = targetTime.getMonth() + 1
-//     var targetDate = targetTime.getDate()
+  const users = await User.find({ type: 'customer' })
+  for (var i = 0; i < users.length; i++) {
+    var user = users[i]._doc
+    var targetTime = new Date(user.peDatesFromGL.getTime() + 7776000000)
+    var targetYear = targetTime.getFullYear()
+    var targetMonth = targetTime.getMonth() + 1
+    var targetDate = targetTime.getDate()
 
-//     if (targetYear === year && targetMonth === month && targetDate === date) {
-//       sendEmailToCustomer(user)
-//     }
-//   }
-// })
+    if (targetYear === year && targetMonth === month && targetDate === date) {
+      sendEmailToCustomer(user)
+    }
+  }
+  for (var i = 0; i < users.length; i++) {
+    var user = users[i]._doc
+    var targetTime = new Date(user.peDatesFromWC.getTime() + 7776000000)
+    var targetYear = targetTime.getFullYear()
+    var targetMonth = targetTime.getMonth() + 1
+    var targetDate = targetTime.getDate()
+
+    if (targetYear === year && targetMonth === month && targetDate === date) {
+      sendEmailToCustomer(user)
+    }
+  }
+})
 
 module.exports = router
