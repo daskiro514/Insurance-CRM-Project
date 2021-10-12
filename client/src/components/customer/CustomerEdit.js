@@ -5,7 +5,7 @@ import CustomerAdminHeader from './partials/CustomerAdminHeader'
 import { updateOnCustomer } from '../../actions/customer'
 import { setAlert } from '../../actions/alert'
 
-const CustomerEdit = ({ user, updateOnCustomer, setAlert }) => {
+const CustomerEdit = ({ user, updateOnCustomer, setAlert, showInsurance }) => {
   let history = useHistory()
   const [email, setEmail] = React.useState('')
   const [companyName, setCompanyName] = React.useState('')
@@ -80,73 +80,79 @@ const CustomerEdit = ({ user, updateOnCustomer, setAlert }) => {
             required
           />
         </div>
+        {showInsurance === 'GL' ?
+          <div className='table-responsive mt-4'>
+            <h5>General Liability Insurance</h5>
+            <table className='table table-borderless'>
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Class / Name</th>
+                  <th className='insuAmount'>Amount ($)</th>
+                  <th>Rate (%)</th>
+                  <th>Type</th>
+                </tr>
+              </thead>
+              <tbody>
+                {gliClasses.map((item, index) =>
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{item.name}</td>
+                    <td>
+                      <input
+                        type='number'
+                        className='form-control bg-light'
+                        value={item.amount}
+                        onChange={e => setAmount('gli', e.target.value, index)}
+                        required
+                      />
+                    </td>
+                    <td>{item.rate}</td>
+                    <td>{item.type}</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+          : null
+        }
 
-        <div className='table-responsive mt-4'>
-          <h5>General Liability Insurance</h5>
-          <table className='table table-borderless'>
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>Class / Name</th>
-                <th className='insuAmount'>Amount ($)</th>
-                <th>Rate (%)</th>
-                <th>Type</th>
-              </tr>
-            </thead>
-            <tbody>
-              {gliClasses.map((item, index) =>
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{item.name}</td>
-                  <td>
-                    <input
-                      type='number'
-                      className='form-control bg-light'
-                      value={item.amount}
-                      onChange={e => setAmount('gli', e.target.value, index)}
-                      required
-                    />
-                  </td>
-                  <td>{item.rate}</td>
-                  <td>{item.type}</td>
+        {showInsurance === 'WC' ?
+          <div className='table-responsive mt-4'>
+            <h5>Worker's Compensation Insurance</h5>
+            <table className='table table-borderless'>
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Class / Name</th>
+                  <th>Amount ($)</th>
+                  <th>Rate (%)</th>
+                  <th>Type</th>
                 </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-        <div className='table-responsive'>
-          <h5>Worker's Compensation Insurance</h5>
-          <table className='table table-borderless'>
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>Class / Name</th>
-                <th>Amount ($)</th>
-                <th>Rate (%)</th>
-                <th>Type</th>
-              </tr>
-            </thead>
-            <tbody>
-              {wciClasses.map((item, index) =>
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>{item.name}</td>
-                  <td>
-                    <input
-                      type='number'
-                      className='form-control bg-light'
-                      value={item.amount}
-                      onChange={e => setAmount('wci', e.target.value, index)}
-                      required
-                    />
-                  </td>
-                  <td>{item.rate}</td>
-                  <td>{item.type}</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {wciClasses.map((item, index) =>
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{item.name}</td>
+                    <td>
+                      <input
+                        type='number'
+                        className='form-control bg-light'
+                        value={item.amount}
+                        onChange={e => setAmount('wci', e.target.value, index)}
+                        required
+                      />
+                    </td>
+                    <td>{item.rate}</td>
+                    <td>{item.type}</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+          : null
+        }
 
         <div className='form-group'>
           <button className='btn btn-block btn-success' onClick={() => update()}>UPDATE</button>
@@ -158,6 +164,7 @@ const CustomerEdit = ({ user, updateOnCustomer, setAlert }) => {
 
 const mapStateToProps = state => ({
   user: state.auth.user,
+  showInsurance: state.admin.showInsurance
 })
 
 export default connect(mapStateToProps, { updateOnCustomer, setAlert })(CustomerEdit)

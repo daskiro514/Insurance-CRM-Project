@@ -12,9 +12,16 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
 
   const [policyNumber, setPolicyNumber] = React.useState('')
   const [companyName, setCompanyName] = React.useState('')
-  const [peDatesFrom, setPeDatesFrom] = React.useState('2020-01-01')
-  const [peDatesTill, setPeDatesTill] = React.useState('2020-01-01')
-  const [paidPremium, setPaidPremium] = React.useState(0)
+
+  const [peDatesFromGL, setPeDatesFromGL] = React.useState('2020-01-01')
+  const [peDatesTillGL, setPeDatesTillGL] = React.useState('2020-01-01')
+  const [paidPremiumGL, setPaidPremiumGL] = React.useState(0)
+
+  const [peDatesFromWC, setPeDatesFromWC] = React.useState('2020-01-01')
+  const [peDatesTillWC, setPeDatesTillWC] = React.useState('2020-01-01')
+  const [paidPremiumWC, setPaidPremiumWC] = React.useState(0)
+
+
   const [email, setEmail] = React.useState('')
 
   const [gliClasses, setGliClasses] = React.useState([])
@@ -28,9 +35,12 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
     if (customer) {
       setPolicyNumber(customer._id)
       setCompanyName(customer.companyName)
-      setPeDatesFrom(formatDate(customer.peDatesFrom))
-      setPeDatesTill(formatDate(customer.peDatesTill))
-      setPaidPremium(customer.paidPremium)
+      setPeDatesFromGL(formatDate(customer.peDatesFromGL))
+      setPeDatesTillGL(formatDate(customer.peDatesTillGL))
+      setPaidPremiumGL(customer.paidPremiumGL)
+      setPeDatesFromWC(formatDate(customer.peDatesFromWC))
+      setPeDatesTillWC(formatDate(customer.peDatesTillWC))
+      setPaidPremiumWC(customer.paidPremiumWC)
       setEmail(customer.email)
       setGliClasses(customer.gliClasses)
       setWciClasses(customer.wciClasses)
@@ -105,7 +115,7 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
 
   const onSubmit = e => {
     e.preventDefault()
-    let sendData = { policyNumber, companyName, peDatesFrom, peDatesTill, paidPremium, email, gliClasses, wciClasses }
+    let sendData = { policyNumber, companyName, peDatesFromGL, peDatesTillGL, paidPremiumGL, peDatesFromWC, peDatesTillWC, paidPremiumWC, email, gliClasses, wciClasses }
     updateCustomer(sendData, history, customer._id)
   }
 
@@ -144,32 +154,6 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
                   required
                 />
               </div>
-              <div>
-                <label>Policy Effective Dates</label>
-                <div className='row'>
-                  <div className='form-group col-sm-5 peDates'>
-                    <input
-                      type='date'
-                      className='form-control'
-                      name='peDatesFrom'
-                      value={peDatesFrom}
-                      onChange={e => setPeDatesFrom(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className='form-group col-sm-2 text-center'> ~ </div>
-                  <div className='form-group col-sm-5 peDates'>
-                    <input
-                      type='date'
-                      className='form-control'
-                      name='peDatesTill'
-                      value={peDatesTill}
-                      onChange={e => setPeDatesTill(e.target.value)}
-                      required
-                    />
-                  </div>
-                </div>
-              </div>
               <div className='form-group'>
                 <label>Policy Holder Email</label>
                 <input
@@ -181,17 +165,90 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
                   required
                 />
               </div>
-              <div className='form-group'>
-                <label>Paid Premium</label>
-                <input
-                  type='number'
-                  className='form-control'
-                  name='paidPremium'
-                  value={paidPremium}
-                  onChange={e => setPaidPremium(e.target.value)}
-                  required
-                />
-              </div>
+              {showInsurance === 'GL' ?
+                <>
+                  <div>
+                    <label>Policy Effective Dates</label>
+                    <div className='row'>
+                      <div className='form-group col-sm-5 peDates'>
+                        <input
+                          type='date'
+                          className='form-control'
+                          name='peDatesFromGL'
+                          value={peDatesFromGL}
+                          onChange={e => setPeDatesFromGL(e.target.value)}
+                          required
+                        />
+                      </div>
+                      <div className='form-group col-sm-2 text-center'> ~ </div>
+                      <div className='form-group col-sm-5 peDates'>
+                        <input
+                          type='date'
+                          className='form-control'
+                          name='peDatesTillGL'
+                          value={peDatesTillGL}
+                          onChange={e => setPeDatesTillGL(e.target.value)}
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className='form-group'>
+                    <label>Paid Premium</label>
+                    <input
+                      type='number'
+                      className='form-control'
+                      name='paidPremiumGL'
+                      value={paidPremiumGL}
+                      onChange={e => setPaidPremiumGL(e.target.value)}
+                      required
+                    />
+                  </div>
+                </>
+                : null
+              }
+              {showInsurance === 'WC' ?
+                <>
+                  <div>
+                    <label>Policy Effective Dates</label>
+                    <div className='row'>
+                      <div className='form-group col-sm-5 peDates'>
+                        <input
+                          type='date'
+                          className='form-control'
+                          name='peDatesFromWC'
+                          value={peDatesFromWC}
+                          onChange={e => setPeDatesFromWC(e.target.value)}
+                          required
+                        />
+                      </div>
+                      <div className='form-group col-sm-2 text-center'> ~ </div>
+                      <div className='form-group col-sm-5 peDates'>
+                        <input
+                          type='date'
+                          className='form-control'
+                          name='peDatesTillWC'
+                          value={peDatesTillWC}
+                          onChange={e => setPeDatesTillWC(e.target.value)}
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className='form-group'>
+                    <label>Paid Premium</label>
+                    <input
+                      type='number'
+                      className='form-control'
+                      name='paidPremiumWC'
+                      value={paidPremiumWC}
+                      onChange={e => setPaidPremiumWC(e.target.value)}
+                      required
+                    />
+                  </div>
+                </>
+                : null
+              }
               {showInsurance === 'GL' ?
                 <div className='table-responsive mt-4'>
                   <h5>General Liability Insurance</h5>

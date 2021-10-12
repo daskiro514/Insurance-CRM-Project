@@ -17,8 +17,10 @@ const MasterAdminCustomerRow = ({ item, goPage, setCustomerForPriorityEdit }) =>
     <tr onClick={() => goPage(history, `customer/${item._id}`)}>
       <td>{item._id}</td>
       <td>{item.companyName}</td>
-      <td><span className={'badge ' + (item.policyPremium < 0 ? 'badge-primary ' : 'badge-danger')}>$ {item.policyPremium}</span></td>
-      <td>{formatDueDate(item.peDatesTill)}</td>
+      <td><span className={'badge ' + (item.policyPremiumGL < 0 ? 'badge-primary ' : 'badge-danger')}>$ {item.policyPremiumGL}</span></td>
+      <td>{formatDueDate(item.peDatesTillGL)}</td>
+      <td><span className={'badge ' + (item.policyPremiumWC < 0 ? 'badge-primary ' : 'badge-danger')}>$ {item.policyPremiumWC}</span></td>
+      <td>{formatDueDate(item.peDatesTillWC)}</td>
       <td>
         <button
           className={'text-uppercase btn btn-sm ' + btnClass}

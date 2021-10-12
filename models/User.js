@@ -42,13 +42,27 @@ const UserSchema = new mongoose.Schema({
   companyName: {
     type: String
   },
-  peDatesFrom: {
+  peDatesFromGL: {
     type: Date,
+    default: Date.now
   },
-  peDatesTill: {
+  peDatesTillGL: {
     type: Date,
+    default: Date.now
   },
-  paidPremium: {
+  peDatesFromWC: {
+    type: Date,
+    default: Date.now
+  },
+  peDatesTillWC: {
+    type: Date,
+    default: Date.now
+  },
+  paidPremiumGL: {
+    type: Number,
+    default: 0
+  },
+  paidPremiumWC: {
     type: Number,
     default: 0
   },

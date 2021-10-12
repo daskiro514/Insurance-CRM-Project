@@ -50,40 +50,91 @@ const MasterAdminCustomer = ({ match, getCustomer, customer, goPage, sendAlertTo
                 <div className='col-sm-6'>Policy Number</div>
                 <div className='col-sm-6 pl-4'>{customer._id}</div>
               </div>
-              <div className='row'>
-                <div className='col-sm-6'>Policy Effective Dates</div>
-                <div className='col-sm-6 pl-4'>{formatDate(customer.peDatesFrom)} ~ {formatDate(customer.peDatesTill)}</div>
-              </div>
-              <div className='row'>
-                <div className='col-sm-6'>Premium Due Date</div>
-                <div className='col-sm-6 pl-4'>{formatDueDate(customer.peDatesTill)}</div>
-              </div>
-              <div className='row'>
-                <div className='col-sm-6'>Total Premium</div>
-                <div className='col-sm-6 pl-4'>$ {customer.totalPremium}</div>
-              </div>
-              <div className='row'>
-                <div className='col-sm-6'>Paid Premium</div>
-                <div className='col-sm-6 pl-4'>$ {customer.paidPremium}</div>
-              </div>
-              <div className='row pt-2'>
-                <div className='col-sm-6'>Amount Owed</div>
-                <div className='col-sm-6 pl-4'><span className={'badge ' + (customer.policyPremium <= 0 ? 'badge-primary ' : 'badge-danger')}>$ {customer.policyPremium}</span></div>
-              </div>
-              {formatDueDate(customer.monthlyDueDate) === 'Expired'
-                ?
-                null
-                :
+              {showInsurance === 'GL' ?
                 <>
-                  <div className='row pt-2'>
-                    <div className='col-sm-6'>Monthly Due Date</div>
-                    <div className='col-sm-6 pl-4'>{formatDueDate(customer.monthlyDueDate)}</div>
+                  <div className='row'>
+                    <div className='col-sm-6'>Policy Effective Dates</div>
+                    <div className='col-sm-6 pl-4'>{formatDate(customer.peDatesFromGL)} ~ {formatDate(customer.peDatesTillGL)}</div>
                   </div>
                   <div className='row'>
-                    <div className='col-sm-6'>Monthly Premium</div>
-                    <div className='col-sm-6 pl-4'><span className={'badge ' + (customer.monthlyPremium <= 0 ? 'badge-primary ' : 'badge-success')}>$ {customer.monthlyPremium}</span></div>
+                    <div className='col-sm-6'>Premium Due Date</div>
+                    <div className='col-sm-6 pl-4'>{formatDueDate(customer.peDatesTillGL)}</div>
                   </div>
+                  <div className='row'>
+                    <div className='col-sm-6'>Total Premium</div>
+                    <div className='col-sm-6 pl-4'>$ {customer.totalPremiumGL}</div>
+                  </div>
+                  <div className='row'>
+                    <div className='col-sm-6'>Paid Premium</div>
+                    <div className='col-sm-6 pl-4'>$ {customer.paidPremiumGL}</div>
+                  </div>
+                  <div className='row pt-2'>
+                    <div className='col-sm-6'>Amount Owed</div>
+                    <div className='col-sm-6 pl-4'><span className={'badge ' + (customer.policyPremiumGL <= 0 ? 'badge-primary ' : 'badge-danger')}>$ {customer.policyPremiumGL}</span></div>
+                  </div>
+                  {formatDueDate(customer.monthlyDueDateGL) === 'Expired'
+                    ?
+                    null
+                    :
+                    <>
+                      <div className='row pt-2'>
+                        <div className='col-sm-6'>Monthly Due Date</div>
+                        <div className='col-sm-6 pl-4'>{formatDueDate(customer.monthlyDueDateGL)}</div>
+                      </div>
+                      <div className='row'>
+                        <div className='col-sm-6'>Monthly Premium</div>
+                        {customer.monthlyPremiumGL > 0 ?
+                          <div className='col-sm-6 pl-4'><span className='badge badge-success'>$ {customer.monthlyPremiumGL}</span></div>
+                          : null
+                        }
+                      </div>
+                    </>
+                  }
                 </>
+                : null
+              }
+              {showInsurance === 'WC' ?
+                <>
+                  <div className='row'>
+                    <div className='col-sm-6'>Policy Effective Dates</div>
+                    <div className='col-sm-6 pl-4'>{formatDate(customer.peDatesFromWC)} ~ {formatDate(customer.peDatesTillWC)}</div>
+                  </div>
+                  <div className='row'>
+                    <div className='col-sm-6'>Premium Due Date</div>
+                    <div className='col-sm-6 pl-4'>{formatDueDate(customer.peDatesTillWC)}</div>
+                  </div>
+                  <div className='row'>
+                    <div className='col-sm-6'>Total Premium</div>
+                    <div className='col-sm-6 pl-4'>$ {customer.totalPremiumWC}</div>
+                  </div>
+                  <div className='row'>
+                    <div className='col-sm-6'>Paid Premium</div>
+                    <div className='col-sm-6 pl-4'>$ {customer.paidPremiumWC}</div>
+                  </div>
+                  <div className='row pt-2'>
+                    <div className='col-sm-6'>Amount Owed</div>
+                    <div className='col-sm-6 pl-4'><span className={'badge ' + (customer.policyPremiumWC <= 0 ? 'badge-primary ' : 'badge-danger')}>$ {customer.policyPremiumWC}</span></div>
+                  </div>
+                  {formatDueDate(customer.monthlyDueDateWC) === 'Expired'
+                    ?
+                    null
+                    :
+                    <>
+                      <div className='row pt-2'>
+                        <div className='col-sm-6'>Monthly Due Date</div>
+                        <div className='col-sm-6 pl-4'>{formatDueDate(customer.monthlyDueDateWC)}</div>
+                      </div>
+                      <div className='row'>
+                        <div className='col-sm-6'>Monthly Premium</div>
+                        {customer.monthlyPremiumWC > 0 ?
+                          <div className='col-sm-6 pl-4'><span className='badge badge-success'>$ {customer.monthlyPremiumWC}</span></div>
+                          : null
+                        }
+                      </div>
+                    </>
+                  }
+                </>
+                : null
               }
               <div className='row pt-3'>
                 <div className='col-sm-6'>Company/Policyholder</div>
@@ -145,7 +196,7 @@ const MasterAdminCustomer = ({ match, getCustomer, customer, goPage, sendAlertTo
                           <td>{item.amount}</td>
                           <td>{item.rate}</td>
                           <td>{item.type}</td>
-                          <td>{(item.amount * item.rate / 1000 * 12 / 9).toFixed(2)}</td>
+                          <td>{(item.amount * item.rate / 100 * 12 / 9).toFixed(2)}</td>
                         </tr>
                       )}
                     </tbody>
@@ -249,7 +300,8 @@ const MasterAdminCustomer = ({ match, getCustomer, customer, goPage, sendAlertTo
                     </div>
                   </div>
                 </>
-                : null}
+                : null
+              }
             </div>
             :
             null

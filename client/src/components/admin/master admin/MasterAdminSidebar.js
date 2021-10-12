@@ -15,34 +15,29 @@ const MasterAdminSidebar = ({ logout, goPage, setShowInsurance }) => {
         <div className='row my-4 mx-2 h3 menuItem' onClick={() => goPage(history, '')}>
           <img src={menuLogo} alt='MENULOGO' className='pr-2' />Aquerate
         </div>
-        {pathname === '/' ? null
+        {(pathname === '/' || pathname === '/addCustomer') ? null
           :
           <>
-            <div className='row mx-3 my-1 menuItem' onClick={() => setShowInsurance('GL')}>
+            <div className='row mx-3 my-2 menuItem' onClick={() => setShowInsurance('GL')}>
               <div className='d-flex align-items-center'>
-                <div><i class='fas fa-user-friends'></i></div>
+                <div><i className='fas fa-user-friends'></i></div>
                 <div>General Liability</div>
               </div>
             </div>
-            <div className='row mx-3 my-1 menuItem' onClick={() => setShowInsurance('WC')}>
+            <div className='row mx-3 my-2 menuItem' onClick={() => setShowInsurance('WC')}>
               <div className='d-flex align-items-center'>
-                <div><i class='fas fa-user-friends'></i></div>
+                <div><i className='fas fa-user-friends'></i></div>
                 <div>Worker's Compensation</div>
               </div>
             </div>
-            <div className='row mx-3 my-1 menuItem' onClick={() => setShowInsurance('COV')}>
+            <div className='row mx-3 my-2 menuItem' onClick={() => setShowInsurance('COV')}>
               <div className='d-flex align-items-center'>
-                <div><i class='fa fa-list-ul'></i></div>
+                <div><i className='fa fa-list-ul'></i></div>
                 <div>Coverages</div>
               </div>
             </div>
           </>
         }
-        {/* {pathname === '/' ? carriers.map((carrier, index) =>
-          <div className='row mx-3 my-1 menuItem' onClick={() => goPage(`carrier/${carrier._id}`)} key={index}>
-            {carrier.name}
-          </div>
-        ) : null} */}
         <div className='row mx-3 menuItem signoutLink' onClick={logout}>
           &#8601; Sign Out
         </div>

@@ -32,38 +32,9 @@ router.get('/getCarriers', async (req, res) => {
 })
 
 router.post('/addCustomer', async (req, res) => {
-  const gliClasses = req.body.gliClasses
-  const wciClasses = req.body.wciClasses
-  let gliClassIds = []
-  let wciClassIds = []
-
   let newCustomer = new User({
     ...req.body
   })
-
-  for (var i = 0; i < gliClasses.length; i++) {
-    let newClassInsu = new ClassInsu({
-      name: gliClasses[i].className,
-      amount: gliClasses[i].amount,
-      rate: gliClasses[i].rate,
-      type: gliClasses[i].type,
-      customer: newCustomer._id
-    })
-    await newClassInsu.save()
-    gliClassIds.push(newClassInsu._id)
-  }
-
-  for (var i = 0; i < wciClasses.length; i++) {
-    let newClassInsu = new ClassInsu({
-      name: wciClasses[i].className,
-      amount: wciClasses[i].amount,
-      rate: wciClasses[i].rate,
-      type: wciClasses[i].type,
-      customer: newCustomer._id
-    })
-    await newClassInsu.save()
-    wciClassIds.push(newClassInsu._id)
-  }
 
   newCustomer.type = 'customer'
   newCustomer.passwordForUpdate = req.body.password
@@ -73,9 +44,6 @@ router.post('/addCustomer', async (req, res) => {
     { forceHttps: true }
   )
   newCustomer.avatar = avatar
-
-  newCustomer.gliClasses = gliClassIds
-  newCustomer.wciClasses = wciClassIds
 
   await newCustomer.save()
 
@@ -89,7 +57,8 @@ router.get('/getCustomers', async (req, res) => {
   var customers = []
   customersFromDB.forEach(customerFromDB => {
     var customer = { ...customerFromDB._doc }
-    customer.policyPremium = policyPremium(customer)
+    customer.policyPremiumGL = policyPremium(customer, 'GL')
+    customer.policyPremiumWC = policyPremium(customer, 'WC')
     customers.push(customer)
   })
 
@@ -110,10 +79,14 @@ router.post('/updateCustomerPriority/:id', async (req, res) => {
 router.get('/getCustomer/:id', async (req, res) => {
   var customerFromDB = await User.findById(req.params.id).populate(['gliClasses', 'wciClasses'])
   var customer = { ...customerFromDB._doc }
-  customer.totalPremium = totalPremium(customer)
-  customer.policyPremium = policyPremium(customer)
-  customer.monthlyPremium = monthlyPremium(customer)
-  customer.monthlyDueDate = monthlyDueDate(customer)
+  customer.totalPremiumGL = totalPremium(customer, 'GL')
+  customer.totalPremiumWC = totalPremium(customer, 'WC')
+  customer.policyPremiumGL = policyPremium(customer, 'GL')
+  customer.policyPremiumWC = policyPremium(customer, 'WC')
+  customer.monthlyPremiumGL = monthlyPremium(customer, 'GL')
+  customer.monthlyPremiumWC = monthlyPremium(customer, 'WC')
+  customer.monthlyDueDateGL = monthlyDueDate(customer, 'GL')
+  customer.monthlyDueDateWC = monthlyDueDate(customer, 'WC')
 
   res.json({
     success: true,
@@ -198,27 +171,27 @@ const sendEmailToCustomer = customer => {
   })
 }
 
-const ruleForEmail = new schedule.RecurrenceRule()
-ruleForEmail.hour = 0
+// const ruleForEmail = new schedule.RecurrenceRule()
+// ruleForEmail.hour = 0
 
-const scheduleForSendEmail = schedule.scheduleJob(ruleForEmail, async () => {
-  var newDate = new Date()
-  var year = newDate.getFullYear()
-  var month = newDate.getMonth() + 1
-  var date = newDate.getDate()
+// const scheduleForSendEmail = schedule.scheduleJob(ruleForEmail, async () => {
+//   var newDate = new Date()
+//   var year = newDate.getFullYear()
+//   var month = newDate.getMonth() + 1
+//   var date = newDate.getDate()
 
-  const users = await User.find({ type: 'customer' })
-  for (var i = 0; i < users.length; i++) {
-    var user = users[i]._doc
-    var targetTime = new Date(user.peDatesFrom.getTime() + 7776000000)
-    var targetYear = targetTime.getFullYear()
-    var targetMonth = targetTime.getMonth() + 1
-    var targetDate = targetTime.getDate()
+//   const users = await User.find({ type: 'customer' })
+//   for (var i = 0; i < users.length; i++) {
+//     var user = users[i]._doc
+//     var targetTime = new Date(user.peDatesFrom.getTime() + 7776000000)
+//     var targetYear = targetTime.getFullYear()
+//     var targetMonth = targetTime.getMonth() + 1
+//     var targetDate = targetTime.getDate()
 
-    if (targetYear === year && targetMonth === month && targetDate === date) {
-      sendEmailToCustomer(user)
-    }
-  }
-})
+//     if (targetYear === year && targetMonth === month && targetDate === date) {
+//       sendEmailToCustomer(user)
+//     }
+//   }
+// })
 
 module.exports = router
