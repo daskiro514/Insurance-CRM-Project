@@ -5,8 +5,9 @@ import { getCustomer, updateCustomer } from '../../../actions/admin'
 import { setAlert } from '../../../actions/alert'
 import { formatDate } from '../../../utils/formatDate1'
 import MasterAdminHeader from './partials/MasterAdminHeader'
+import MasterAdminSidebar from './MasterAdminSidebar'
 
-const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updateCustomer }) => {
+const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updateCustomer, showInsurance }) => {
   let history = useHistory()
 
   const [policyNumber, setPolicyNumber] = React.useState('')
@@ -106,267 +107,273 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
     e.preventDefault()
     let sendData = { policyNumber, companyName, peDatesFrom, peDatesTill, paidPremium, email, gliClasses, wciClasses }
     updateCustomer(sendData, history, customer._id)
-    // if (gliClasses.length > 0 && wciClasses.length > 0) {
-    //   let sendData = { policyNumber, companyName, peDatesFrom, peDatesTill, email, gliClasses, wciClasses }
-    //   updateCustomer(sendData, history, customer._id)
-    // } else {
-    //   setAlert('You should have at least one Insurance Class', 'warning')
-    // }
   }
 
   return (
-    <div className='m-2 main'>
-      <MasterAdminHeader />
-      {customer ?
-        <form className='border rounded-lg container py-3 px-4 clientShow form' onSubmit={onSubmit}>
-          <div className='d-flex align-items-center justify-content-between'>
-            <h5>Policy Details</h5>
-          </div>
-          <div className='form-group'>
-            <label>Policy Number</label>
-            <input
-              type='text'
-              className='form-control'
-              name='policyNumber'
-              value={policyNumber}
-              onChange={e => setPolicyNumber(e.target.value)}
-              disabled
-              style={{ cursor: 'not-allowed' }}
-              required
-            />
-          </div>
-          <div className='form-group'>
-            <label>Name of Company/Policyholder</label>
-            <input
-              type='text'
-              className='form-control'
-              name='companyName'
-              value={companyName}
-              onChange={e => setCompanyName(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label>Policy Effective Dates</label>
-            <div className='row'>
-              <div className='form-group col-sm-5 peDates'>
+    <div className='row'>
+      <MasterAdminSidebar />
+      <div className='col-md-10'>
+        <div className='m-2 main'>
+          <MasterAdminHeader />
+          {customer ?
+            <form className='border rounded-lg container py-3 px-4 clientShow form' onSubmit={onSubmit}>
+              <div className='d-flex align-items-center justify-content-between'>
+                <h5>Policy Details</h5>
+              </div>
+              <div className='form-group'>
+                <label>Policy Number</label>
                 <input
-                  type='date'
+                  type='text'
                   className='form-control'
-                  name='peDatesFrom'
-                  value={peDatesFrom}
-                  onChange={e => setPeDatesFrom(e.target.value)}
+                  name='policyNumber'
+                  value={policyNumber}
+                  onChange={e => setPolicyNumber(e.target.value)}
+                  disabled
+                  style={{ cursor: 'not-allowed' }}
                   required
                 />
               </div>
-              <div className='form-group col-sm-2 text-center'> ~ </div>
-              <div className='form-group col-sm-5 peDates'>
+              <div className='form-group'>
+                <label>Name of Company/Policyholder</label>
                 <input
-                  type='date'
+                  type='text'
                   className='form-control'
-                  name='peDatesTill'
-                  value={peDatesTill}
-                  onChange={e => setPeDatesTill(e.target.value)}
+                  name='companyName'
+                  value={companyName}
+                  onChange={e => setCompanyName(e.target.value)}
                   required
                 />
               </div>
-            </div>
-          </div>
-          <div className='form-group'>
-            <label>Policy Holder Email</label>
-            <input
-              type='email'
-              className='form-control'
-              name='email'
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className='form-group'>
-            <label>Paid Premium</label>
-            <input
-              type='number'
-              className='form-control'
-              name='paidPremium'
-              value={paidPremium}
-              onChange={e => setPaidPremium(e.target.value)}
-              required
-            />
-          </div>
-          <div className='table-responsive mt-4'>
-            <h5>General Liability Insurance</h5>
-            <table className='table table-borderless'>
-              <thead>
-                <tr>
-                  <th>No</th>
-                  <th>Class / Name</th>
-                  <th>Amount ($)</th>
-                  <th>Rate (%)</th>
-                  <th className='insuType'>Type</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className='form'>
-                  <td></td>
-                  <td>
+              <div>
+                <label>Policy Effective Dates</label>
+                <div className='row'>
+                  <div className='form-group col-sm-5 peDates'>
                     <input
-                      type='text'
+                      type='date'
                       className='form-control'
-                      name='name'
-                      value={className}
-                      onChange={e => setClassName(e.target.value)}
+                      name='peDatesFrom'
+                      value={peDatesFrom}
+                      onChange={e => setPeDatesFrom(e.target.value)}
+                      required
                     />
-                  </td>
-                  <td>
+                  </div>
+                  <div className='form-group col-sm-2 text-center'> ~ </div>
+                  <div className='form-group col-sm-5 peDates'>
                     <input
-                      type='number'
+                      type='date'
                       className='form-control'
-                      name='amount'
-                      value={amount}
-                      onChange={e => setAmount(e.target.value)}
+                      name='peDatesTill'
+                      value={peDatesTill}
+                      onChange={e => setPeDatesTill(e.target.value)}
+                      required
                     />
-                  </td>
-                  <td>
-                    <input
-                      type='number'
-                      className='form-control'
-                      name='rate'
-                      value={rate}
-                      onChange={e => setRate(e.target.value)}
-                    />
-                  </td>
-                  <td>
-                    <select
-                      className='form-control'
-                      name='type'
-                      value={type}
-                      onChange={e => setType(e.target.value)}
-                    >
-                      <option value='Sales'>Sales</option>
-                      <option value='Cost'>Cost</option>
-                      <option value='Payroll'>Payroll</option>
-                    </select>
-                  </td>
-                  <td>
-                    <input
-                      type='button'
-                      className='form-control'
-                      onClick={() => saveClass()}
-                      style={{ color: 'white', backgroundColor: '#007bff' }}
-                      value='SAVE'
-                    />
-                  </td>
-                </tr>
-                {gliClasses.map((item, index) =>
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{item.name}</td>
-                    <td>{item.amount}</td>
-                    <td>{item.rate}</td>
-                    <td>{item.type}</td>
-                    <td>
-                      <input
-                        type='button'
-                        className='form-control'
-                        onClick={() => deleteClass(index)}
-                        style={{ color: 'white', backgroundColor: '#dc3545' }}
-                        value='DELETE'
-                      />
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-          <div className='table-responsive mt-4'>
-            <h5>Worker's Compensation Insurance</h5>
-            <table className='table table-borderless'>
-              <thead>
-                <tr>
-                  <th>No</th>
-                  <th>Class / Name</th>
-                  <th>Amount ($)</th>
-                  <th>Rate (%)</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className='form'>
-                  <td></td>
-                  <td>
-                    <input
-                      type='text'
-                      className='form-control'
-                      name='className1'
-                      value={className1}
-                      onChange={e => setClassName1(e.target.value)}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type='number'
-                      className='form-control'
-                      name='amount1'
-                      value={amount1}
-                      onChange={e => setAmount1(e.target.value)}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type='number'
-                      className='form-control'
-                      name='rate1'
-                      value={rate1}
-                      onChange={e => setRate1(e.target.value)}
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type='button'
-                      className='form-control'
-                      onClick={() => saveClass1()}
-                      style={{ color: 'white', backgroundColor: '#007bff' }}
-                      value='SAVE'
-                    />
-                  </td>
-                </tr>
-                {wciClasses.map((item, index) =>
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{item.name}</td>
-                    <td>{item.amount}</td>
-                    <td>{item.rate}</td>
-                    <td>
-                      <input
-                        type='button'
-                        className='form-control'
-                        onClick={() => deleteClass1(index)}
-                        style={{ color: 'white', backgroundColor: '#dc3545' }}
-                        value='DELETE'
-                      />
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-          <div className='form-group'>
-            <button type='submit' className='form-control btn-success' value='UPDATE'>
-              UPDATE
-            </button>
-          </div>
-        </form>
-        :
-        null
-      }
+                  </div>
+                </div>
+              </div>
+              <div className='form-group'>
+                <label>Policy Holder Email</label>
+                <input
+                  type='email'
+                  className='form-control'
+                  name='email'
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <div className='form-group'>
+                <label>Paid Premium</label>
+                <input
+                  type='number'
+                  className='form-control'
+                  name='paidPremium'
+                  value={paidPremium}
+                  onChange={e => setPaidPremium(e.target.value)}
+                  required
+                />
+              </div>
+              {showInsurance === 'GL' ?
+                <div className='table-responsive mt-4'>
+                  <h5>General Liability Insurance</h5>
+                  <table className='table table-borderless'>
+                    <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Class / Name</th>
+                        <th>Amount ($)</th>
+                        <th>Rate (%)</th>
+                        <th className='insuType'>Type</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className='form'>
+                        <td></td>
+                        <td>
+                          <input
+                            type='text'
+                            className='form-control'
+                            name='name'
+                            value={className}
+                            onChange={e => setClassName(e.target.value)}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type='number'
+                            className='form-control'
+                            name='amount'
+                            value={amount}
+                            onChange={e => setAmount(e.target.value)}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type='number'
+                            className='form-control'
+                            name='rate'
+                            value={rate}
+                            onChange={e => setRate(e.target.value)}
+                          />
+                        </td>
+                        <td>
+                          <select
+                            className='form-control'
+                            name='type'
+                            value={type}
+                            onChange={e => setType(e.target.value)}
+                          >
+                            <option value='Sales'>Sales</option>
+                            <option value='Cost'>Cost</option>
+                            <option value='Payroll'>Payroll</option>
+                          </select>
+                        </td>
+                        <td>
+                          <input
+                            type='button'
+                            className='form-control'
+                            onClick={() => saveClass()}
+                            style={{ color: 'white', backgroundColor: '#007bff' }}
+                            value='SAVE'
+                          />
+                        </td>
+                      </tr>
+                      {gliClasses.map((item, index) =>
+                        <tr key={index}>
+                          <td>{index + 1}</td>
+                          <td>{item.name}</td>
+                          <td>{item.amount}</td>
+                          <td>{item.rate}</td>
+                          <td>{item.type}</td>
+                          <td>
+                            <input
+                              type='button'
+                              className='form-control'
+                              onClick={() => deleteClass(index)}
+                              style={{ color: 'white', backgroundColor: '#dc3545' }}
+                              value='DELETE'
+                            />
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+                : null
+              }
+              {showInsurance === 'WC' ?
+                <div className='table-responsive mt-4'>
+                  <h5>Worker's Compensation Insurance</h5>
+                  <table className='table table-borderless'>
+                    <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Class / Name</th>
+                        <th>Amount ($)</th>
+                        <th>Rate (%)</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr className='form'>
+                        <td></td>
+                        <td>
+                          <input
+                            type='text'
+                            className='form-control'
+                            name='className1'
+                            value={className1}
+                            onChange={e => setClassName1(e.target.value)}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type='number'
+                            className='form-control'
+                            name='amount1'
+                            value={amount1}
+                            onChange={e => setAmount1(e.target.value)}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type='number'
+                            className='form-control'
+                            name='rate1'
+                            value={rate1}
+                            onChange={e => setRate1(e.target.value)}
+                          />
+                        </td>
+                        <td>
+                          <input
+                            type='button'
+                            className='form-control'
+                            onClick={() => saveClass1()}
+                            style={{ color: 'white', backgroundColor: '#007bff' }}
+                            value='SAVE'
+                          />
+                        </td>
+                      </tr>
+                      {wciClasses.map((item, index) =>
+                        <tr key={index}>
+                          <td>{index + 1}</td>
+                          <td>{item.name}</td>
+                          <td>{item.amount}</td>
+                          <td>{item.rate}</td>
+                          <td>
+                            <input
+                              type='button'
+                              className='form-control'
+                              onClick={() => deleteClass1(index)}
+                              style={{ color: 'white', backgroundColor: '#dc3545' }}
+                              value='DELETE'
+                            />
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+                : null
+              }
+              <div className='form-group'>
+                <button type='submit' className='form-control btn-success' value='UPDATE'>
+                  UPDATE
+                </button>
+              </div>
+            </form>
+            :
+            null
+          }
+        </div>
+      </div>
     </div>
   )
 }
 
 const mapStateToProps = state => ({
-  customer: state.admin.adminCustomer
+  customer: state.admin.adminCustomer,
+  showInsurance: state.admin.showInsurance
 })
 
 export default connect(mapStateToProps, { getCustomer, setAlert, updateCustomer })(MasterAdminEditCustomer)

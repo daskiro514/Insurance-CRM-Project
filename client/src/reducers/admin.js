@@ -3,7 +3,8 @@ import {
   CUSTOMERS_LOADED,
   PRIORITY_EDIT_SHOW,
   PRIORITY_EDIT_CUSTOMER_LOADED,
-  ADMIN_CUSTOMER_LOADED
+  ADMIN_CUSTOMER_LOADED,
+  SET_SHOW_INSURANCE
 } from '../actions/types'
 
 const initialState = {
@@ -12,7 +13,8 @@ const initialState = {
   carrierCustomers: [],
   customerForPriorityEdit: null,
   customerPriorityEditModalShow: false,
-  adminCustomer: null
+  adminCustomer: null,
+  showInsurance: 'GL',
 }
 
 function adminReducer(state = initialState, action) {
@@ -44,6 +46,11 @@ function adminReducer(state = initialState, action) {
       return {
         ...state,
         adminCustomer: payload
+      }
+    case SET_SHOW_INSURANCE:
+      return {
+        ...state,
+        showInsurance: payload
       }
     default:
       return state

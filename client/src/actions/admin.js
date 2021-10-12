@@ -5,7 +5,8 @@ import {
   CUSTOMERS_LOADED,
   PRIORITY_EDIT_SHOW,
   PRIORITY_EDIT_CUSTOMER_LOADED,
-  ADMIN_CUSTOMER_LOADED
+  ADMIN_CUSTOMER_LOADED,
+  SET_SHOW_INSURANCE
 } from './types'
 
 export const getCarriers = () => async dispatch => {
@@ -19,8 +20,16 @@ export const getCarriers = () => async dispatch => {
   }
 }
 
-export const goPage = (history, location) => async () => {
+export const goPage = (history, location, insurance = 'GL') => async dispatch => {
   await history.push(`/${location}`)
+  dispatch(setShowInsurance(insurance))
+}
+
+export const setShowInsurance = (insurance = 'GL') => async dispatch => {
+  dispatch({
+    type: SET_SHOW_INSURANCE,
+    payload: insurance
+  })
 }
 
 export const addCustomer = (formData, history) => async dispatch => {
