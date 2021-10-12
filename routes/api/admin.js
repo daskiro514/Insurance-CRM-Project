@@ -62,8 +62,6 @@ router.get('/getCustomers', async (req, res) => {
     customers.push(customer)
   })
 
-  console.log(customers)
-
   res.json({
     success: true,
     customers
