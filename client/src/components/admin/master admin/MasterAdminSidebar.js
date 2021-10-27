@@ -15,6 +15,12 @@ const MasterAdminSidebar = ({ logout, goPage, setShowInsurance }) => {
         <div className='row my-4 mx-2 h3 menuItem' onClick={() => goPage(history, '')}>
           <img src={menuLogo} alt='MENULOGO' className='pr-2' />Aquerate
         </div>
+        <div className='row mx-3 my-2 menuItem' onClick={() => history.goBack()}>
+          <div className='d-flex align-items-center'>
+            <div><i class="material-icons mt-2">keyboard_return</i></div>
+            <div>Back</div>
+          </div>
+        </div>
         {(pathname === '/' || pathname === '/addCustomer') ? null
           :
           <>
