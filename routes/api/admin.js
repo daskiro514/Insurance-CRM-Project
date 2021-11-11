@@ -184,6 +184,7 @@ const scheduleForSendEmail = schedule.scheduleJob(ruleForEmail, async () => {
   const users = await User.find({ type: 'customer' })
   for (var i = 0; i < users.length; i++) {
     var user = users[i]._doc
+    // 90 Days GL
     var targetTime = new Date(user.peDatesFromGL.getTime() + 7776000000)
     var targetYear = targetTime.getFullYear()
     var targetMonth = targetTime.getMonth() + 1
@@ -191,10 +192,27 @@ const scheduleForSendEmail = schedule.scheduleJob(ruleForEmail, async () => {
 
     if (targetYear === year && targetMonth === month && targetDate === date) {
       sendEmailToCustomer(user)
+      if (user.priority === 'low' && policyPremium(user, 'GL') > 0) {
+        await User.findByIdAndUpdate(user._id, { priority: 'mid' }, { new: true })
+      }
+    }
+
+    // 180 Days
+    var targetTime = new Date(user.peDatesFromGL.getTime() + 15552000000)
+    var targetYear = targetTime.getFullYear()
+    var targetMonth = targetTime.getMonth() + 1
+    var targetDate = targetTime.getDate()
+
+    if (targetYear === year && targetMonth === month && targetDate === date) {
+      sendEmailToCustomer(user)
+      if (user.priority === 'mid' && policyPremium(user, 'GL') > 0) {
+        await User.findByIdAndUpdate(user._id, { priority: 'high' }, { new: true })
+      }
     }
   }
   for (var i = 0; i < users.length; i++) {
     var user = users[i]._doc
+    // 90 Days WC
     var targetTime = new Date(user.peDatesFromWC.getTime() + 7776000000)
     var targetYear = targetTime.getFullYear()
     var targetMonth = targetTime.getMonth() + 1
@@ -202,6 +220,22 @@ const scheduleForSendEmail = schedule.scheduleJob(ruleForEmail, async () => {
 
     if (targetYear === year && targetMonth === month && targetDate === date) {
       sendEmailToCustomer(user)
+      if (user.priority === 'low' && policyPremium(user, 'WC') > 0) {
+        await User.findByIdAndUpdate(user._id, { priority: 'mid' }, { new: true })
+      }
+    }
+
+    // 180 Days
+    var targetTime = new Date(user.peDatesFromWC.getTime() + 15552000000)
+    var targetYear = targetTime.getFullYear()
+    var targetMonth = targetTime.getMonth() + 1
+    var targetDate = targetTime.getDate()
+
+    if (targetYear === year && targetMonth === month && targetDate === date) {
+      sendEmailToCustomer(user)
+      if (user.priority === 'mid' && policyPremium(user, 'WC') > 0) {
+        await User.findByIdAndUpdate(user._id, { priority: 'high' }, { new: true })
+      }
     }
   }
 })
