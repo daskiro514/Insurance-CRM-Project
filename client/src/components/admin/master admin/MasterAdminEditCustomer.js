@@ -120,6 +120,15 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
     setEdit(true)
   }
 
+  const editClass1 = (item, index) => {
+    setIndex(index)
+    setClassName1(item.name)
+    setAmount1(item.amount)
+    setRate1(item.rate)
+    setType1(item.type)
+    setEdit(true)
+  }
+
   const updateClass = () => {
     const classForUpdate = {
       name: className,
@@ -133,30 +142,13 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
       let tempClasses = [...gliClasses]
       tempClasses.splice(index, 1, classForUpdate)
       setGliClasses(tempClasses)
-      setClassName1('')
-      setAmount1(0)
-      setRate1(0)
-      setType1('Payroll')
+      setClassName('')
+      setAmount(0)
+      setRate(0)
+      setType('Payroll')
       setEdit(false)
       setIndex(0)
     }
-  }
-
-  const deleteClass = (index) => {
-    if (window.confirm('Are you sure?')) {
-      let tempGliClasses = [...gliClasses]
-      tempGliClasses.splice(index, 1)
-      setGliClasses(tempGliClasses)
-    }
-  }
-
-  const editClass1 = (item, index) => {
-    setIndex(index)
-    setClassName1(item.name)
-    setAmount1(item.amount)
-    setRate1(item.rate)
-    setType1(item.type)
-    setEdit(true)
   }
 
   const updateClass1 = () => {
@@ -178,6 +170,14 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
       setType1('Payroll')
       setEdit(false)
       setIndex(0)
+    }
+  }
+
+  const deleteClass = (index) => {
+    if (window.confirm('Are you sure?')) {
+      let tempGliClasses = [...gliClasses]
+      tempGliClasses.splice(index, 1)
+      setGliClasses(tempGliClasses)
     }
   }
 
