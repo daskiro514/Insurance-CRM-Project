@@ -21,7 +21,6 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
   const [peDatesTillWC, setPeDatesTillWC] = React.useState('2020-01-01')
   const [paidPremiumWC, setPaidPremiumWC] = React.useState(0)
 
-
   const [email, setEmail] = React.useState('')
 
   const [gliClasses, setGliClasses] = React.useState([])
@@ -56,6 +55,21 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
   const [amount1, setAmount1] = React.useState(0)
   const [rate1, setRate1] = React.useState(0)
   const [type1, setType1] = React.useState('Payroll')
+
+  const [edit, setEdit] = React.useState(false)
+  const [index, setIndex] = React.useState(0)
+
+  React.useEffect(() => {
+    setEdit(false)
+    setClassName('')
+    setAmount(0)
+    setRate(0)
+    setType('Payroll')
+    setClassName1('')
+    setAmount1(0)
+    setRate1(0)
+    setType1('Payroll')
+  }, [showInsurance])
 
   const saveClass = () => {
     const classForAdd = {
@@ -97,11 +111,73 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
     }
   }
 
+  const editClass = (item, index) => {
+    setIndex(index)
+    setClassName(item.name)
+    setAmount(item.amount)
+    setRate(item.rate)
+    setType(item.type)
+    setEdit(true)
+  }
+
+  const updateClass = () => {
+    const classForUpdate = {
+      name: className,
+      amount: amount,
+      rate: rate,
+      type: type
+    }
+    if (className.length === 0 || amount < 0 || rate <= 0) {
+      setAlert('You should input the Insurance variables correct!', 'warning')
+    } else {
+      let tempClasses = [...gliClasses]
+      tempClasses.splice(index, 1, classForUpdate)
+      setGliClasses(tempClasses)
+      setClassName1('')
+      setAmount1(0)
+      setRate1(0)
+      setType1('Payroll')
+      setEdit(false)
+      setIndex(0)
+    }
+  }
+
   const deleteClass = (index) => {
     if (window.confirm('Are you sure?')) {
       let tempGliClasses = [...gliClasses]
       tempGliClasses.splice(index, 1)
       setGliClasses(tempGliClasses)
+    }
+  }
+
+  const editClass1 = (item, index) => {
+    setIndex(index)
+    setClassName1(item.name)
+    setAmount1(item.amount)
+    setRate1(item.rate)
+    setType1(item.type)
+    setEdit(true)
+  }
+
+  const updateClass1 = () => {
+    const classForUpdate = {
+      name: className1,
+      amount: amount1,
+      rate: rate1,
+      type: type1
+    }
+    if (className1.length === 0 || amount1 < 0 || rate1 <= 0) {
+      setAlert('You should input the Insurance variables correct!', 'warning')
+    } else {
+      let tempClasses = [...wciClasses]
+      tempClasses.splice(index, 1, classForUpdate)
+      setWciClasses(tempClasses)
+      setClassName1('')
+      setAmount1(0)
+      setRate1(0)
+      setType1('Payroll')
+      setEdit(false)
+      setIndex(0)
     }
   }
 
@@ -309,9 +385,14 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
                           <input
                             type='button'
                             className='form-control'
-                            onClick={() => saveClass()}
+                            onClick={() => {
+                              if (edit)
+                                updateClass()
+                              else
+                                saveClass()
+                            }}
                             style={{ color: 'white', backgroundColor: '#007bff' }}
-                            value='SAVE'
+                            value={edit ? 'UPDATE' : 'SAVE'}
                           />
                         </td>
                       </tr>
@@ -323,13 +404,18 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
                           <td>{item.rate}</td>
                           <td>{item.type}</td>
                           <td>
-                            <input
-                              type='button'
-                              className='form-control'
-                              onClick={() => deleteClass(index)}
-                              style={{ color: 'white', backgroundColor: '#dc3545' }}
-                              value='DELETE'
-                            />
+                            <div className="btn-group btn-group-sm">
+                              <button
+                                type="button"
+                                className="btn btn-info"
+                                onClick={() => editClass(item, index)}
+                              >EDIT</button>
+                              <button
+                                type="button"
+                                className="btn btn-danger"
+                                onClick={() => deleteClass(index)}
+                              >DELETE</button>
+                            </div>
                           </td>
                         </tr>
                       )}
@@ -385,9 +471,14 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
                           <input
                             type='button'
                             className='form-control'
-                            onClick={() => saveClass1()}
+                            onClick={() => {
+                              if (edit)
+                                updateClass1()
+                              else
+                                saveClass1()
+                            }}
                             style={{ color: 'white', backgroundColor: '#007bff' }}
-                            value='SAVE'
+                            value={edit ? 'UPDATE' : 'SAVE'}
                           />
                         </td>
                       </tr>
@@ -398,13 +489,18 @@ const MasterAdminEditCustomer = ({ match, getCustomer, customer, setAlert, updat
                           <td>{item.amount}</td>
                           <td>{item.rate}</td>
                           <td>
-                            <input
-                              type='button'
-                              className='form-control'
-                              onClick={() => deleteClass1(index)}
-                              style={{ color: 'white', backgroundColor: '#dc3545' }}
-                              value='DELETE'
-                            />
+                            <div className="btn-group btn-group-sm">
+                              <button
+                                type="button"
+                                className="btn btn-info"
+                                onClick={() => editClass1(item, index)}
+                              >EDIT</button>
+                              <button
+                                type="button"
+                                className="btn btn-danger"
+                                onClick={() => deleteClass1(index)}
+                              >DELETE</button>
+                            </div>
                           </td>
                         </tr>
                       )}

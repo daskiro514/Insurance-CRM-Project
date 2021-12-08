@@ -17,7 +17,7 @@ const MasterAdminSidebar = ({ logout, goPage, setShowInsurance }) => {
         </div>
         <div className='row mx-3 my-2 menuItem' onClick={() => history.goBack()}>
           <div className='d-flex align-items-center'>
-            <div><i class="material-icons mt-2">keyboard_return</i></div>
+            <div><i className="material-icons mt-2">keyboard_return</i></div>
             <div>Back</div>
           </div>
         </div>
