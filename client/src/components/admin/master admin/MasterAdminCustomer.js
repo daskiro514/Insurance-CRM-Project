@@ -211,7 +211,7 @@ const MasterAdminCustomer = ({ match, getCustomer, customer, goPage, sendAlertTo
                     <div className='col-sm-6'>
                       <div className='row'>
                         <div className='col-sm-6'>
-                          Business Owner’s Policy
+                          Business Owner's Policy
                         </div>
                         <div className='col-sm-6'>
                           $1,000,000
@@ -227,7 +227,7 @@ const MasterAdminCustomer = ({ match, getCustomer, customer, goPage, sendAlertTo
                       </div>
                       <div className='row'>
                         <div className='col-sm-6'>
-                          Worker’s Compensation Insurance
+                          Worker's Compensation Insurance
                         </div>
                         <div className='col-sm-6'>
                           $500,000

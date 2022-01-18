@@ -49,11 +49,13 @@ const monthlyPremium = (customer, type) => {
 
   var monthAmountLeft
   if (type === 'GL') {
-    monthAmountLeft = Math.ceil((customer.peDatesTillGL - today) / 2628000000)
+    monthAmountLeft = Math.round((customer.peDatesTillGL - today) / 2628000000)
   }
   if (type === 'WC') {
-    monthAmountLeft = Math.ceil((customer.peDatesTillWC - today) / 2628000000)
+    monthAmountLeft = Math.round((customer.peDatesTillWC - today) / 2628000000)
   }
+
+  if (monthAmountLeft === 0) monthAmountLeft = 1
 
   return (policyPremium(customer, type) / monthAmountLeft).toFixed(2)
 }

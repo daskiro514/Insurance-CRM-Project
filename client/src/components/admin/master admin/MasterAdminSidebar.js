@@ -5,7 +5,7 @@ import { goPage, setShowInsurance } from '../../../actions/admin'
 import { useHistory } from "react-router-dom"
 import menuLogo from '../../../img/logo/menu-logo.svg'
 
-const MasterAdminSidebar = ({ logout, goPage, setShowInsurance }) => {
+const MasterAdminSidebar = ({ logout, goPage, setShowInsurance, showInsurance }) => {
   let history = useHistory()
   let pathname = history.location.pathname
 
@@ -15,7 +15,7 @@ const MasterAdminSidebar = ({ logout, goPage, setShowInsurance }) => {
         <div className='row my-4 mx-2 h3 menuItem' onClick={() => goPage(history, '')}>
           <img src={menuLogo} alt='MENULOGO' className='pr-2' />Aquerate
         </div>
-        <div className='row mx-3 my-2 menuItem' onClick={() => history.goBack()}>
+        <div className='row px-3 py-2 menuItem' onClick={() => history.goBack()}>
           <div className='d-flex align-items-center'>
             <div><i className="material-icons mt-2">keyboard_return</i></div>
             <div>Back</div>
@@ -24,19 +24,19 @@ const MasterAdminSidebar = ({ logout, goPage, setShowInsurance }) => {
         {(pathname === '/' || pathname === '/addCustomer') ? null
           :
           <>
-            <div className='row mx-3 my-2 menuItem' onClick={() => setShowInsurance('GL')}>
+            <div className={'row px-3 py-2 menuItem' + (showInsurance === 'GL' ? ' selected' : '')} onClick={() => setShowInsurance('GL')}>
               <div className='d-flex align-items-center'>
                 <div><i className='fas fa-user-friends'></i></div>
                 <div>General Liability</div>
               </div>
             </div>
-            <div className='row mx-3 my-2 menuItem' onClick={() => setShowInsurance('WC')}>
+            <div className={'row px-3 py-2 menuItem' + (showInsurance === 'WC' ? ' selected' : '')} onClick={() => setShowInsurance('WC')}>
               <div className='d-flex align-items-center'>
                 <div><i className='fas fa-user-friends'></i></div>
                 <div>Worker's Compensation</div>
               </div>
             </div>
-            <div className='row mx-3 my-2 menuItem' onClick={() => setShowInsurance('COV')}>
+            <div className={'row px-3 py-2 menuItem' + (showInsurance === 'COV' ? ' selected' : '')} onClick={() => setShowInsurance('COV')}>
               <div className='d-flex align-items-center'>
                 <div><i className='fa fa-list-ul'></i></div>
                 <div>Coverages</div>
@@ -44,7 +44,7 @@ const MasterAdminSidebar = ({ logout, goPage, setShowInsurance }) => {
             </div>
           </>
         }
-        <div className='row mx-3 menuItem signoutLink' onClick={logout}>
+        <div className='row px-3 menuItem signoutLink' onClick={logout}>
           &#8601; Sign Out
         </div>
       </div>
@@ -54,6 +54,7 @@ const MasterAdminSidebar = ({ logout, goPage, setShowInsurance }) => {
 
 const mapStateToProps = state => ({
   user: state.auth.user,
+  showInsurance: state.admin.showInsurance,
 })
 
 export default connect(mapStateToProps, { logout, setShowInsurance, goPage })(MasterAdminSidebar)
