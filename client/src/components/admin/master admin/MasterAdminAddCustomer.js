@@ -9,6 +9,9 @@ import MasterAdminSidebar from './MasterAdminSidebar'
 const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
   const history = useHistory()
 
+  const [enabledGL, setEnabledGL] = React.useState(false)
+  const [enabledWC, setEnabledWC] = React.useState(false)
+
   const [formData, setFormData] = React.useState({
     name: '',
     username: '',
@@ -33,10 +36,25 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
 
   const onSubmit = e => {
     e.preventDefault()
-    if (peDatesTillGL > peDatesFromGL && peDatesTillWC > peDatesFromWC) {
+    if (enabledGL === false && enabledWC === false) {
+      setAlert('You should choose one Insurance at least.', 'warning')
+      return
+    }
+    if (enabledGL && peDatesTillGL > peDatesFromGL && enabledWC && peDatesTillWC > peDatesFromWC) {
       addCustomer(formData, history)
-    } else if (peDatesTillGL <= peDatesFromGL || peDatesTillWC <= peDatesFromWC) {
+      return
+    }
+    if (enabledGL && peDatesTillGL > peDatesFromGL) {
+      addCustomer(formData, history)
+      return
+    }
+    if (enabledWC && peDatesTillWC > peDatesFromWC) {
+      addCustomer(formData, history)
+      return
+    }
+    if (peDatesTillGL <= peDatesFromGL || peDatesTillWC <= peDatesFromWC) {
       setAlert('You chose incorrect Dates', 'warning')
+      return
     }
   }
 
@@ -131,29 +149,34 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
                 required
               />
             </div>
-            <h5 className='mt-4'>General Liability Insurance</h5>
+            <div className='d-flex align-items-center'>
+              <h5 className='mt-4'>General Liability Insurance </h5>
+              <input type='checkbox' className='ml-3 mt-3 checkbox' value={enabledGL} onChange={() => setEnabledGL(!enabledGL)} />
+            </div>
             <div>
               <label>Policy Effective Dates</label>
               <div className='row'>
                 <div className='form-group col-sm-5 peDates'>
                   <input
                     type='date'
-                    className='form-control'
+                    className={'form-control' + (enabledGL ? ' ' : ' disabled')}
                     name='peDatesFromGL'
                     value={peDatesFromGL}
                     onChange={onChange}
                     required
+                    disabled={!enabledGL}
                   />
                 </div>
                 <div className='form-group col-sm-2 text-center'> ~ </div>
                 <div className='form-group col-sm-5 peDates'>
                   <input
                     type='date'
-                    className='form-control'
+                    className={'form-control' + (enabledGL ? '' : ' disabled')}
                     name='peDatesTillGL'
                     value={peDatesTillGL}
                     onChange={onChange}
                     required
+                    disabled={!enabledGL}
                   />
                 </div>
               </div>
@@ -162,36 +185,42 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
               <label>Paid Amount</label>
               <input
                 type='number'
-                className='form-control'
+                className={'form-control' + (enabledGL ? '' : ' disabled')}
                 name='paidPremiumGL'
                 value={paidPremiumGL}
                 onChange={onChange}
                 required
+                disabled={!enabledGL}
               />
             </div>
-            <h5 className='mt-4'>Worker's Compensation Insurance</h5>
+            <div className='d-flex align-items-center'>
+              <h5 className='mt-4'>Worker's Compensation Insurance</h5>
+              <input type='checkbox' className='ml-3 mt-3 checkbox' value={enabledWC} onChange={() => setEnabledWC(!enabledWC)} />
+            </div>
             <div>
               <label>Policy Effective Dates</label>
               <div className='row'>
                 <div className='form-group col-sm-5 peDates'>
                   <input
                     type='date'
-                    className='form-control'
+                    className={'form-control' + (enabledWC ? '' : ' disabled')}
                     name='peDatesFromWC'
                     value={peDatesFromWC}
                     onChange={onChange}
                     required
+                    disabled={!enabledWC}
                   />
                 </div>
                 <div className='form-group col-sm-2 text-center'> ~ </div>
                 <div className='form-group col-sm-5 peDates'>
                   <input
                     type='date'
-                    className='form-control'
+                    className={'form-control' + (enabledWC ? '' : ' disabled')}
                     name='peDatesTillWC'
                     value={peDatesTillWC}
                     onChange={onChange}
                     required
+                    disabled={!enabledWC}
                   />
                 </div>
               </div>
@@ -200,11 +229,12 @@ const MasterAdminAddCustomer = ({ addCustomer, carriers, setAlert }) => {
               <label>Paid Amount</label>
               <input
                 type='number'
-                className='form-control'
+                className={'form-control' + (enabledWC ? '' : ' disabled')}
                 name='paidPremiumWC'
                 value={paidPremiumWC}
                 onChange={onChange}
                 required
+                disabled={!enabledWC}
               />
             </div>
             <div className='form-group'>
